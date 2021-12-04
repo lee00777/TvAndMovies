@@ -5,14 +5,14 @@ import {
   Center,
   Pressable,
 } from 'native-base';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function AppBar() {
 
   const [selected, setSelected] = React.useState(1);
   return (
-      <Box flex={1} safeAreaTop>
+      <Box flex={1} safeAreaTop  style={styles.navigation}>
         <Center flex={1}></Center>
         <HStack bg="primary.700" alignItems="center" safeAreaBottom shadow={6}>
           <Pressable
@@ -75,5 +75,9 @@ const styles = StyleSheet.create({
     icons: {
         fontSize: 32,
         color: 'white'
+    },
+    navigation: {
+      position: 'absolute',
+      bottom: 0
     }
 })
