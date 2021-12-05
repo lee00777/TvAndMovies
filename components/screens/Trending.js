@@ -1,64 +1,81 @@
 import React, {useState, useEffect} from 'react'
-import { View, SafeAreaView, FlatList, StatusBar, StyleSheet, Image } from 'react-native'
-import { Box, Text, AspectRatio, Stack, Heading, ScrollView} from 'native-base';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, FlatList, StatusBar, StyleSheet, Image, Dimensions } from 'react-native'
+import { Box, Text, AspectRatio, Stack, Heading, ScrollView ,VStack, HStack,Center} from 'native-base';
+import { style } from 'dom-helpers';
 
+const width =  Dimensions.get('window').width;
+const height =  Dimensions.get('window').height;
 
 export default function Trending() {
+  const [shows, setShows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  //tv shows data
+  function getData(){
+    let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+    let url = 'https://api.trakt.tv/shows/trending';
 
-    const [shows, setShows] = useState([]);
-
-//tv shows data
-    function getData(){
-        let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
-        let url = 'https://api.trakt.tv/shows/trending';
-    
-        fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            "trakt-api-key": id,
-            'trakt-api-version': '2'
-          }
-        })
-        .then((resp)=>{
-          if (!resp.ok) throw new Error(resp.statusText);
-            return resp.json();
-        })
-        .then((data) => {
-            let results = data.map((item, index) => {
-                return {...item.show, key: index + 10}
-            });
-           setShows(results);
-        })
-        .catch(console.error);
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "trakt-api-key": id,
+        'trakt-api-version': '2'
       }
+    })
+    .then((resp)=>{
+      if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    })
+    .then((data) => {
+      let results = data.map((item, index) => {
+        return {...item.show, key: index + 10}
+      });
+      setShows(results);
+      setIsRefreshing(false);
+      setLoading(false);
+      setError("")
+    })
+    .catch((error) => {
+      console.error;
+      setIsRefreshing(false);
+      setLoading(true);
+      setError(err.message);
+      setShows([])
+    });
+    }
 
+  useEffect(()=>{
+    getData();
+  }, [])
 
-
-      useEffect(()=>{
-        getData();
-      }, [])
-
-      return (
-        <SafeAreaView>
-            <Text style={styles.header} >TRENDING</Text>
-       <FlatList 
-       data={shows}
-       renderItem={(item)=>(
-           <Shows shows={item} />
-       )}
-       ListEmptyComponent={<Text>No Data. Such Sad.</Text>}
-       keyExtractor={item => item.key}
-       />
-       </SafeAreaView>
-      );
+  return (
+    <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
+      <Text style={styles.header}>Trending movies</Text>
+      <FlatList 
+        data={shows}
+        numColumns={3}
+        columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+        renderItem={(item)=>( <Shows shows={item} />)}
+        refreshing={isRefreshing}
+        onRefresh={()=>{
+          setIsRefreshing(true);
+          getData();
+        }}
+        ListEmptyComponent={<Text> Loading ...</Text>}
+        keyExtractor={item => item.key}
+      />
+    </SafeAreaView>
+  );
 }
 
 
 function Shows({shows}){
-    //data coming from "shows"
+//data coming from "shows"
 // title = shows.item['title']
-//year = shows.item['year']
+// year = shows.item['year']
 // ids =  shows.item['ids'] (imdb / slug / tmdb / trakt)
 
 //images / fetching data from TMDB
@@ -66,90 +83,75 @@ function Shows({shows}){
 //IMG_URL: 'https://image.tmdb.org/t/p/'
 //img = APP.IMG_URL + 'w500' + obj.poster_path;
 
-const [img, setImg] = useState('');
+  const [img, setImg] = useState('');
 
-let path;
-function getDetails(id){
-    let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
-    let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`;
-    fetch(url)
-      .then((resp)=>{
-        if (!resp.ok) throw new Error(resp.statusText);
-          return resp.json();
-      })
-      .then((data) => {
-        //   console.log(data.backdrop_path)
-       return setImg(data.poster_path)
-      })
-      .catch(console.error);
-    }
-    getDetails(shows.item['ids'].tmdb);
+  let path;
 
-let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
+  function getDetails(id){
+      let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
+      let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`;
+      fetch(url)
+        .then((resp)=>{
+          if (!resp.ok) throw new Error(resp.statusText);
+            return resp.json();
+        })
+        .then((data) => {
+          //console.log(data.backdrop_path)
+          return setImg(data.poster_path)
+        })
+        .catch(console.error);
+      }
+  getDetails(shows.item['ids'].tmdb);
 
-    return (
-        <Box maxW="80"
-        style={styles.list}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
-        _dark={{
-          borderColor: "coolGray.600",
-          backgroundColor: "gray.700",
-        }}
-        _web={{
-          shadow: 2,
-          borderWidth: 0,
-        }}
-        _light={{
-          backgroundColor: "gray.50",
-        }}
-      >
-          <Box>
-        <Stack p='1.5' space={3}>
-        <Image style={styles.image} source={{
-            uri: imgURL
-        }} />
+  let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
 
-        <Heading size="xs" ml="-1">
-       { shows.item['title']}
-          </Heading>
-        {/* </AspectRatio> */}
-        <Text
-            fontSize="xs"
-            _light={{
-              color: "primary.900",
-            }}
-            _dark={{
-              color: "primary.500",
-            }}
-            fontWeight="500"
-            ml="-0.5"
-            mt="-1"
-          >
-                { shows.item['year']}
-          </Text>
-        </Stack>
-        </Box>
-        </Box>
-    )
-
+  return (
+    <View style={styles.card}>
+      <Image style={styles.image} source={{uri: imgURL}} />
+      <Text style={styles.title}> {shows.item['title']}</Text> 
+      <Text style={styles.released_year}> {shows.item['year']}</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    header:{
-        fontSize: 32,
-        fontWeight: 'bold',
-       textAlign:'center',
-       paddingVertical: 20
-    },
-    list: {
-        paddingHorizontal: 10,
-        marginLeft: 10
-    },
-    image: {
-        width: 100,
-        height: 100
-    }
+  safeArea:{
+    flex: 1,  
+    resizeMode: 'center', 
+    backgroundColor:'#202124',
+    justifyContent: 'flex-start',
+
+  },
+  header:{
+    fontSize: 20,
+    color:"#fff",
+    textAlign:'left',
+    marginLeft:15,
+    paddingTop: 15
+  },
+  card:{
+    alignSelf:"flex-start",
+    flexShrink: 1,
+    width:(width/3)-20
+  },
+  image: {
+    width:(width/3)-20,
+    height:(width/2)-20,
+    borderRadius:7,
+    marginTop:20
+  },
+  title:{
+    fontSize:15,
+    color:"#fff"
+  },
+  released_year:{
+    fontSize:13,
+    color:"gray"
+  },
+  loading:{
+    color:"#000",
+    textAlign:"center",
+    fontSize:18,
+    marginTop:50
+  },
 })
