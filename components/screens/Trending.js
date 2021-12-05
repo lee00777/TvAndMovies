@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, FlatList, StatusBar, StyleSheet, Image, Dimensions } from 'react-native'
-import { Box, Text, AspectRatio, Stack, Heading, ScrollView ,VStack, HStack,Center} from 'native-base';
+import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
 import { style } from 'dom-helpers';
+import { Icon } from 'react-native-elements'
 
 const width =  Dimensions.get('window').width;
-const height =  Dimensions.get('window').height;
 
 export default function Trending() {
   const [shows, setShows] = useState([]);
@@ -33,6 +32,7 @@ export default function Trending() {
       let results = data.map((item, index) => {
         return {...item.show, key: index + 10}
       });
+      console.log(results)
       setShows(results);
       setIsRefreshing(false);
       setLoading(false);
@@ -84,9 +84,7 @@ function Shows({shows}){
 //img = APP.IMG_URL + 'w500' + obj.poster_path;
 
   const [img, setImg] = useState('');
-
   let path;
-
   function getDetails(id){
       let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
       let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`;
@@ -107,6 +105,13 @@ function Shows({shows}){
 
   return (
     <View style={styles.card}>
+      <Pressable  
+        style={styles.likeBtn}
+        onPress={(ev)=>{
+        console.log(`you pressed ${shows.item['ids'].tmdb}` )
+      }}>
+      <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
+      </Pressable>
       <Image style={styles.image} source={{uri: imgURL}} />
       <Text style={styles.title}> {shows.item['title']}</Text> 
       <Text style={styles.released_year}> {shows.item['year']}</Text>
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   card:{
     alignSelf:"flex-start",
     flexShrink: 1,
-    width:(width/3)-20
+    width:(width/3)-20,
   },
   image: {
     width:(width/3)-20,
@@ -141,11 +146,21 @@ const styles = StyleSheet.create({
     marginTop:20
   },
   title:{
-    fontSize:15,
+    fontSize:13,
     color:"#fff"
   },
+  likeBtn:{
+    position:"absolute",
+    right: 3, 
+    top: 25, 
+    zIndex: 10 ,
+  },
+  briefInfo:{
+    flexWrap:"wrap",
+    flexDirection:"row",
+  },
   released_year:{
-    fontSize:13,
+    fontSize:11,
     color:"gray"
   },
   loading:{
