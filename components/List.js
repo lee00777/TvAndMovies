@@ -6,6 +6,8 @@ import { Icon } from 'react-native-elements'
 
 const width =  Dimensions.get('window').width;
 
+//TODO: placeholder image for images not found
+
 export default function List({shows}) {
     const [img, setImg] = useState('');
 

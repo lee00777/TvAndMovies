@@ -53,12 +53,12 @@ export default function Trending() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
-      <Text style={styles.header}>Trending movies</Text>
+      <Text style={styles.header}>Trending Shows</Text>
       <FlatList 
         data={shows}
         numColumns={3}
         columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-        renderItem={(item)=>( <Shows shows={item} />)}
+        renderItem={(item)=>( <List shows={item} />)}
         refreshing={isRefreshing}
         onRefresh={()=>{
           setIsRefreshing(true);
@@ -71,12 +71,6 @@ export default function Trending() {
   );
 }
 
-
-function Shows({shows}){
-  return (
-    <List shows={shows} />
-  )
-}
 
 const styles = StyleSheet.create({
   safeArea:{
