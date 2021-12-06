@@ -32,7 +32,6 @@ export default function Trending() {
       let results = data.map((item, index) => {
         return {...item.show, key: index + 10}
       });
-      console.log(results)
       setShows(results);
       setIsRefreshing(false);
       setLoading(false);
@@ -84,8 +83,7 @@ function Shows({shows}){
 //img = APP.IMG_URL + 'w500' + obj.poster_path;
 
   const [img, setImg] = useState('');
-  let path;
-  function getDetails(id){
+  function getImage(id){
       let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
       let url = `https://api.themoviedb.org/3/tv/${id}?api_key=${api_key}`;
       fetch(url)
@@ -99,7 +97,7 @@ function Shows({shows}){
         })
         .catch(console.error);
       }
-  getDetails(shows.item['ids'].tmdb);
+  getImage(shows.item['ids'].tmdb);
 
   let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
 
