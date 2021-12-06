@@ -11,7 +11,6 @@ export default function Trending() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
   //tv shows data
   function getData(){
