@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
@@ -11,6 +11,7 @@ export default function Search() {
     const [error, setError] = useState(false)
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [search, setSearch] = useState('');
+
 
     //tv shows data
     function getData(query){
@@ -57,11 +58,10 @@ export default function Search() {
             numColumns={3}
             columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
             renderItem={(item)=>( <List shows={item} />)}
-            refreshing={isRefreshing}
-            onRefresh={()=>{
-              setIsRefreshing(true);
-              getData();
-            }}
+            // refreshing={isRefreshing}
+            // onRefresh={()=>{
+            //   setIsRefreshing(true);
+            // }}
             keyExtractor={item => item.key}
           />
         </SafeAreaView>
@@ -96,5 +96,8 @@ const styles = StyleSheet.create({
     },
     input:{
         color: 'white'
-    }
+    },
+    fadingContainer: {
+        padding: 20,
+      },
   })
