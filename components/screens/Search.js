@@ -4,6 +4,7 @@ import { Input } from 'react-native-elements';
 import List from '../List';
 
 export default function Search() {
+    //TODO: fix corrector
 
     const [shows, setShows] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,16 +47,11 @@ export default function Search() {
       });
       }
 
-      function handleSearch(){
-          console.log(search);
-          getData(search);
-      }
-
     return (
         <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
         <Text style={styles.header}>Find a TV Show</Text>
         <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=>setSearch(value)} 
-        onSubmitEditing={handleSearch}/>
+        onSubmitEditing={()=> getData(search)}/>
             <FlatList 
             data={shows}
             numColumns={3}
@@ -66,28 +62,12 @@ export default function Search() {
               setIsRefreshing(true);
               getData();
             }}
-            // ListEmptyComponent={<Text> Loading ...</Text>}
             keyExtractor={item => item.key}
           />
         </SafeAreaView>
     )
 }
 
-// const List = (
-//     <FlatList 
-//     data={shows}
-//     numColumns={3}
-//     columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-//     renderItem={(item)=>( <Shows shows={item} />)}
-//     refreshing={isRefreshing}
-//     onRefresh={()=>{
-//       setIsRefreshing(true);
-//       getData();
-//     }}
-//     ListEmptyComponent={<Text> Loading ...</Text>}
-//     keyExtractor={item => item.key}
-//   />
-// );
 
 const styles = StyleSheet.create({
     safeArea:{

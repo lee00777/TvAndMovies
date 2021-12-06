@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
+import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable, useWindowDimensions, Animated} from 'react-native'
 import { style } from 'dom-helpers';
 import { Icon } from 'react-native-elements'
 import List from '../List';
@@ -12,6 +12,7 @@ export default function Trending() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
+
   //tv shows data
   function getData(){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
@@ -64,6 +65,7 @@ export default function Trending() {
           setIsRefreshing(true);
           getData();
         }}
+        scrollEventThrottle={1}
         ListEmptyComponent={<Text> Loading ...</Text>}
         keyExtractor={item => item.key}
       />
