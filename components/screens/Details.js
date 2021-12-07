@@ -94,7 +94,7 @@ export default function Details({id}) {
              <Text>Total Episodes: {show.aired_episodes}</Text>
              <View style={styles.nextEp}>
                 <Text>Next Episode</Text>
-                <Text>Title: {nextEpisode.title}</Text>
+                <Text>Title: {nextEpisode.title} </Text>
                 <Text>Date: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
                 <Text>Overview: {nextEpisode.overview}</Text>
              </View>
