@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, FlatList, StyleSheet, Dimensions} from 'react-native'
 import List from '../List';
 
+
 const width =  Dimensions.get('window').width;
 
 
@@ -13,7 +14,7 @@ export default function Trending() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   //tv shows data
-  function getData(){
+  function getShows(){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
     let url = 'https://api.trakt.tv/shows/trending';
 
@@ -48,7 +49,7 @@ export default function Trending() {
     }
 
   useEffect(()=>{
-    getData();
+    getShows();
   }, [])
 
   return (
@@ -62,7 +63,7 @@ export default function Trending() {
         refreshing={isRefreshing}
         onRefresh={()=>{
           setIsRefreshing(true);
-          getData();
+          getShows();
         }}
         on
         scrollEventThrottle={1}

@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
 import { style } from 'dom-helpers';
 import { Icon } from 'react-native-elements'
+import { getData } from './utils/storage.utils';
 
 const width =  Dimensions.get('window').width;
 
 //TODO: placeholder image for images not found
 
 export default function List({shows}) {
+ 
     const [img, setImg] = useState('');
 
     function getImage(id){
@@ -20,7 +22,6 @@ export default function List({shows}) {
               return resp.json();
           })
           .then((data) => {
-            //   console.log(data.backdrop_path)
            return setImg(data.poster_path)
           })
           .catch(console.error);
@@ -28,6 +29,9 @@ export default function List({shows}) {
 
         getImage(shows.item['ids'].tmdb);
     
+        function saveFave(id){
+          console.log(id);
+        }
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
     return (
@@ -35,8 +39,11 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
+              navigator.navigate
             console.log(`you pressed ${shows.item['ids'].tmdb}` )
-          }}>
+          }}
+          onLongPress={(ev)=> saveFave(shows.item['ids'].tmdb)}
+          >
           <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
           </Pressable>
           <Image style={styles.image} source={{uri: imgURL}} />
