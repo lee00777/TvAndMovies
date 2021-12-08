@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useEffect,useRef} from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
@@ -7,11 +7,44 @@ export default function Search() {
     //TODO: fix corrector
 
     const [shows, setShows] = useState([]);
+    const [recommended, setRecommended] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false)
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [search, setSearch] = useState('');
 
+    function getRecommended(){
+      let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+      let url = 'https://api.trakt.tv/shows/recommended';
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "trakt-api-key": id,
+          'trakt-api-version': '2'
+        }
+      })
+      .then((resp)=>{
+        if (!resp.ok) throw new Error(resp.statusText);
+          return resp.json();
+      })
+      .then((data) => {
+        let results = data.map((item, index) => {
+          return {...item.show, key: index + 10}
+        });
+        setRecommended(results);
+        setIsRefreshing(false);
+        setLoading(false);
+        setError("")
+      })
+      .catch((error) => {
+        console.error;
+        setIsRefreshing(false);
+        setLoading(true);
+        setError(err.message);
+        setRecommended([])
+      });
+    }
 
     //tv shows data
     function getData(query){
@@ -47,24 +80,34 @@ export default function Search() {
         setShows([])
       });
       }
-
+    
+      useEffect(() => {
+        getRecommended();
+      }, [])
     return (
-        <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
+      <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
         <Text style={styles.header}>Find a TV Show</Text>
         <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=>setSearch(value)} 
         onSubmitEditing={()=> getData(search)}/>
+          { shows.length == 0 ? 
+              <> 
+                <Text style={styles.subHeader}>Recommended</Text>
+                <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+                renderItem={(item)=>( <List shows={item} />)}/> 
+              </> : 
             <FlatList 
-            data={shows}
-            numColumns={3}
-            columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-            renderItem={(item)=>( <List shows={item} />)}
+              data={shows}
+              numColumns={3}
+              columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+              renderItem={(item)=>( <List shows={item} />)}
             // refreshing={isRefreshing}
             // onRefresh={()=>{
             //   setIsRefreshing(true);
             // }}
             keyExtractor={item => item.key}
           />
-        </SafeAreaView>
+          }
+      </SafeAreaView>
     )
 }
 
@@ -75,7 +118,6 @@ const styles = StyleSheet.create({
       resizeMode: 'center', 
       backgroundColor:'#202124',
       justifyContent: 'flex-start',
-  
     },
     header:{
       fontSize: 20,
@@ -83,6 +125,12 @@ const styles = StyleSheet.create({
       textAlign:'left',
       marginLeft:15,
       paddingTop: 15
+    },
+    subHeader:{
+      fontSize: 15,
+      color:"#fff",
+      textAlign:'left',
+      marginLeft:15,
     },
     briefInfo:{
       flexWrap:"wrap",
@@ -95,7 +143,9 @@ const styles = StyleSheet.create({
       marginTop:50
     },
     input:{
-        color: 'white'
+        color: 'white',
+        marginLeft:5,
+        fontSize:15
     },
     fadingContainer: {
         padding: 20,
