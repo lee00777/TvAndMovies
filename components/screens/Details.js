@@ -73,32 +73,32 @@ export default function Details({id}) {
               return resp.json();
           })
           .then((data) => {
-           return setImg(data.poster_path)
+            return setImg(data.poster_path)
           })
           .catch(console.error);
         };
-        let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
-
-        let nextEpDate = new Date(nextEpisode.first_aired).toLocaleDateString;
+    let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
+    let nextEpDate = new Date(nextEpisode.first_aired).toLocaleDateString;
+    
     return (
         <SafeAreaProvider>
-        <ScrollView style={styles.card}>
-             <Image style={styles.image} source={{uri: imgURL}} />
-             <View style={styles.overview}>
-             <Text style={styles.overviewTitle} >Overview:</Text>
-             <Text>{show.overview}</Text>
-             </View>
-             <Text>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
-             <Text>Network: {show.network} / {show.country}</Text>
-             <Text>Current status: {show.status}</Text>
-             <Text>Total Episodes: {show.aired_episodes}</Text>
-             <View style={styles.nextEp}>
-                <Text>Next Episode</Text>
-                <Text>Title: {nextEpisode.title} </Text>
-                <Text>Date: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
-                <Text>Overview: {nextEpisode.overview}</Text>
-             </View>
-        </ScrollView>
+          <ScrollView style={styles.card}>
+              <Image style={styles.image} source={{uri: imgURL}} />
+              <View style={styles.overview}>
+              <Text style={styles.overviewTitle} >Overview:</Text>
+              <Text>{show.overview}</Text>
+              </View>
+              <Text>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
+              <Text>Network: {show.network} / {show.country}</Text>
+              <Text>Current status: {show.status}</Text>
+              <Text>Total Episodes: {show.aired_episodes}</Text>
+              <View style={styles.nextEp}>
+                  <Text>Next Episode</Text>
+                  <Text>Title: {nextEpisode.title} </Text>
+                  <Text>Date: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
+                  <Text>Overview: {nextEpisode.overview}</Text>
+              </View>
+          </ScrollView>
         </SafeAreaProvider>
     )
 }
