@@ -2,13 +2,20 @@ import React, {useState, useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, FlatList, StyleSheet, Dimensions} from 'react-native'
 import List from '../List';
-
+//  app-loading & font
+import * as Font from "expo-font";
+import Apploading from "expo-app-loading";
 
 const width =  Dimensions.get('window').width;
 
+const getFont = () =>
+Font.loadAsync({
+  roboto: require("../../assets/fonts/Roboto-Medium.ttf"),
+});
 
 export default function Trending() {
   const [shows, setShows] = useState([]);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -52,6 +59,7 @@ export default function Trending() {
     getShows();
   }, [])
 
+if (isFontLoaded) {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <Text style={styles.header}>Trending Shows</Text>
@@ -72,6 +80,16 @@ export default function Trending() {
       />
     </SafeAreaView>
   );
+} else {
+  return (
+    <Apploading
+      startAsync={getFont}
+      onFinish={() => {
+        setIsFontLoaded(true);
+      }}
+      onError={console.warn}
+    /> );
+  }
 }
 
 
@@ -81,9 +99,9 @@ const styles = StyleSheet.create({
     resizeMode: 'center', 
     backgroundColor:'#202124',
     justifyContent: 'flex-start',
-
   },
   header:{
+    fontFamily:"roboto",
     fontSize: 20,
     color:"#fff",
     textAlign:'left',
