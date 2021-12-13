@@ -5,7 +5,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const width =  Dimensions.get('window').width;
 
-export default function Details({id}) {
+export default function Details({navigation, route}) {
+  let {id} = route.params;
+  console.log(`route ${id}`);
 
     const [img, setImg] = useState('');
     const [show, setShow] = useState([]);
@@ -61,7 +63,7 @@ export default function Details({id}) {
     }
 
     useEffect(()=>{
-        getDetails('187026');
+        getDetails(id);
     }, [])
 
     function getImage(id){

@@ -50,7 +50,7 @@ export default function List({shows}) {
           </Pressable>
           <Pressable
           onPress={()=>{
-            navigation.navigate('Details', {id: shows.item['ids'].tmdb})
+            navigation.navigate('Details', {id: shows.item['ids'].trakt})
             console.log(`you pressed ${shows.item['ids'].tmdb}`)
           }}
           >
