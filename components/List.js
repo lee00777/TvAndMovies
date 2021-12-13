@@ -4,13 +4,16 @@ import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressab
 import { style } from 'dom-helpers';
 import { Icon } from 'react-native-elements'
 import { getData } from './utils/storage.utils';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Link } from '@react-navigation/native';
 
 const width =  Dimensions.get('window').width;
 
 //TODO: placeholder image for images not found
 
 export default function List({shows}) {
- 
+  const navigation = useNavigation();
+
     const [img, setImg] = useState('');
 
     function getImage(id){
@@ -39,20 +42,28 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
-              navigator.navigate
             console.log(`you pressed ${shows.item['ids'].tmdb}` )
           }}
           onLongPress={(ev)=> saveFave(shows.item['ids'].tmdb)}
           >
           <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
           </Pressable>
+          <Pressable
+          onPress={()=>{
+            navigation.navigate('Details', {id: shows.item['ids'].tmdb})
+            console.log(`you pressed ${shows.item['ids'].tmdb}`)
+          }}
+          >
           <Image style={styles.image} source={{uri: imgURL}} />
+          </Pressable>
           <Text style={styles.title}> {shows.item['title']}</Text> 
           <Text style={styles.released_year}> {shows.item['year']}</Text>
         </View>
       )
 
     }
+
+    
 
 const styles = StyleSheet.create({
   card:{

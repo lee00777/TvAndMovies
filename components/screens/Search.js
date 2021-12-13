@@ -1,10 +1,12 @@
-import React, {useState, useEffect,useRef} from 'react'
+import React, {useState, useEffect,useRef, createContext} from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
 
+
 export default function Search() {
-    //TODO: fix corrector
+
+    //TODO: fix spell checker
 
     const [shows, setShows] = useState([]);
     const [recommended, setRecommended] = useState([])
@@ -100,10 +102,6 @@ export default function Search() {
               numColumns={3}
               columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
               renderItem={(item)=>( <List shows={item} />)}
-            // refreshing={isRefreshing}
-            // onRefresh={()=>{
-            //   setIsRefreshing(true);
-            // }}
             keyExtractor={item => item.key}
           />
           }
