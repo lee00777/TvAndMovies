@@ -64,7 +64,7 @@ export default function Details({navigation, route}) {
 
     useEffect(()=>{
         getDetails(id);
-    }, [])
+    }, [id])
 
     function getImage(id){
         let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
