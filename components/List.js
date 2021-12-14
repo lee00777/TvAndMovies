@@ -1,8 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import GlobalContext from './utils/globalContext.utils.'
 
 
@@ -16,6 +15,7 @@ export default function List({shows}) {
 
   const {favorites, removeData, addStorageData, faveData, setFaveData} = useContext(GlobalContext);
 
+  
     const [img, setImg] = useState('');
   
     function checkFavorite(id){
@@ -64,9 +64,8 @@ export default function List({shows}) {
           console.log(faveData);
         }
 
-      useEffect(() => {
-        getImage(shows.item['ids'].tmdb);
-      }, [])
+        
+        getImage(shows.item['ids'].tmdb)
 
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
