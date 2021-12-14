@@ -1,12 +1,15 @@
-import React, {useState, useEffect,useRef} from 'react'
+import React, {useState, useEffect,useRef, useContext} from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
+import GlobalState from '../utils/globalContext.utils.';
+
 
 export default function Search() {
-    //TODO: fix corrector
 
-    const [shows, setShows] = useState([]);
+    //TODO: fix spell checker
+    const {shows, setShows} = useContext(GlobalState);
+    // const [shows, setShows] = useState([]);
     const [recommended, setRecommended] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false)
@@ -100,10 +103,6 @@ export default function Search() {
               numColumns={3}
               columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
               renderItem={(item)=>( <List shows={item} />)}
-            // refreshing={isRefreshing}
-            // onRefresh={()=>{
-            //   setIsRefreshing(true);
-            // }}
             keyExtractor={item => item.key}
           />
           }

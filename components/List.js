@@ -1,17 +1,29 @@
-import React, {useState} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useContext, useEffect, useState} from 'react'
 import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
-import { style } from 'dom-helpers';
 import { Icon } from 'react-native-elements'
-import { getData } from './utils/storage.utils';
+import { useNavigation } from '@react-navigation/native';
+import GlobalContext from './utils/globalContext.utils.'
+
 
 const width =  Dimensions.get('window').width;
 
 //TODO: placeholder image for images not found
 
 export default function List({shows}) {
- 
+  const navigation = useNavigation();
+  
+
+  const {favorites, removeData, addStorageData, faveData, setFaveData} = useContext(GlobalContext);
+
     const [img, setImg] = useState('');
+  
+    function checkFavorite(id){
+      if (favorites.includes(id)) {
+        return true
+      } else {
+        return false
+      }
+    }
 
     function getImage(id){
         let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
@@ -27,11 +39,36 @@ export default function List({shows}) {
           .catch(console.error);
         }
 
-        getImage(shows.item['ids'].tmdb);
-    
+
         function saveFave(id){
-          console.log(id);
+        if(favorites.includes(id)){
+          removeData(id);
+          removeFaveData(id);
+        } else {
+          addStorageData(id);
+          addFaveData();
         }
+        }
+
+        function addFaveData(){
+          setFaveData((old)=> [shows.item, ...old])
+          console.log(`added ${shows.item.title}`);
+          console.log(faveData)
+        }
+
+        function removeFaveData(id){
+          let newData = faveData.filter(item => item['ids'].trakt != id);
+          setFaveData(newData);
+          console.log(`removed ${shows.item.title}`);
+          console.log(faveData);
+        }
+
+        
+
+      useEffect(() => {
+        getImage(shows.item['ids'].tmdb);
+      }, [shows])
+
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
     return (
@@ -39,20 +76,28 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
-              navigator.navigate
-            console.log(`you pressed ${shows.item['ids'].tmdb}` )
+              saveFave(shows.item['ids'].trakt);
+              // getFaveData()
           }}
-          onLongPress={(ev)=> saveFave(shows.item['ids'].tmdb)}
           >
-          <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
+          <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:30}}/>
           </Pressable>
+          <Pressable
+          onPress={()=>{
+            navigation.navigate('Details', {id: shows.item['ids'].trakt})
+            console.log(`you pressed ${shows.item['ids'].tmdb}`)
+          }}
+          >
           <Image style={styles.image} source={{uri: imgURL}} />
+          </Pressable>
           <Text style={styles.title}> {shows.item['title']}</Text> 
           <Text style={styles.released_year}> {shows.item['year']}</Text>
         </View>
       )
 
     }
+
+    
 
 const styles = StyleSheet.create({
   card:{

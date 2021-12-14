@@ -2,10 +2,14 @@ import { ScrollView } from 'native-base';
 import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Dimensions, Image} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Button, Icon } from 'react-native-elements';
 
 const width =  Dimensions.get('window').width;
 
-export default function Details({id}) {
+export default function Details({navigation, route}) {
+  //TODO: fix JSON Parse error: Unexpected EOF
+
+  let {id} = route.params;
 
     const [img, setImg] = useState('');
     const [show, setShow] = useState([]);
@@ -61,8 +65,8 @@ export default function Details({id}) {
     }
 
     useEffect(()=>{
-        getDetails('187026');
-    }, [])
+        getDetails(id);
+    }, [id])
 
     function getImage(id){
         let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
@@ -78,10 +82,12 @@ export default function Details({id}) {
           .catch(console.error);
         };
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
-    let nextEpDate = new Date(nextEpisode.first_aired).toLocaleDateString;
     
     return (
         <SafeAreaProvider>
+          <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
+            <Icon name='arrowleft' type='antdesign' size={25} color='white'/>
+          } />
           <ScrollView style={styles.card}>
               <Image style={styles.image} source={{uri: imgURL}} />
               <View style={styles.overview}>
@@ -95,8 +101,7 @@ export default function Details({id}) {
               <View style={styles.nextEp}>
                   <Text>Next Episode</Text>
                   <Text>Title: {nextEpisode.title} </Text>
-                  <Text>Date: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
-                  <Text>Overview: {nextEpisode.overview}</Text>
+                  <Text>Next Episode: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
               </View>
           </ScrollView>
         </SafeAreaProvider>
