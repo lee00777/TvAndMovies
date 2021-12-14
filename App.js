@@ -18,7 +18,9 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
+  const [shows, setShows] = useState([]);
   const [faves, setFaves] = useState([]);
+  const [faveData, setFaveData] = useState([]);
   const { getItem, setItem } = useAsyncStorage('test3');
 
   const getStorageData = () => {
@@ -44,14 +46,16 @@ export default function App() {
      setFaves(newFaves);
      setItem(JSON.stringify(faves))
      .then(()=>{
-       console.log(`removed ${value}`);
-       console.log(faves);
      })
      .catch((error) => console.log(error))
   }
 
   const globalData = {
     favorites: faves,
+    shows: shows,
+    faveData: faveData,
+    setFaveData,
+    setShows,
     removeData,
     addStorageData
   }

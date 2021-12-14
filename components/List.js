@@ -14,7 +14,7 @@ export default function List({shows}) {
   const navigation = useNavigation();
   
 
-  const {favorites, removeData, addStorageData} = useContext(GlobalContext);
+  const {favorites, removeData, addStorageData, faveData, setFaveData} = useContext(GlobalContext);
 
     const [img, setImg] = useState('');
   
@@ -40,16 +40,33 @@ export default function List({shows}) {
           .catch(console.error);
         }
 
-        getImage(shows.item['ids'].tmdb);
 
         function saveFave(id){
         if(favorites.includes(id)){
           removeData(id);
+          removeFaveData(id);
         } else {
           addStorageData(id);
+          addFaveData();
         }
-        
         }
+
+        function addFaveData(){
+          setFaveData((old)=> [shows.item, ...old])
+          console.log(`added ${shows.item.title}`);
+          console.log(faveData)
+        }
+
+        function removeFaveData(id){
+          let newData = faveData.filter(item => item['ids'].trakt != id);
+          setFaveData(newData);
+          console.log(`removed ${shows.item.title}`);
+          console.log(faveData);
+        }
+
+      useEffect(() => {
+        getImage(shows.item['ids'].tmdb);
+      }, [])
 
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
@@ -58,7 +75,8 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
-              saveFave(shows.item['ids'].trakt)
+              saveFave(shows.item['ids'].trakt);
+              // getFaveData()
           }}
           >
           <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:30}}/>

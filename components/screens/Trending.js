@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, FlatList, StyleSheet, Dimensions} from 'react-native'
 import List from '../List';
 //  app-loading & font
 import * as Font from "expo-font";
 import Apploading from "expo-app-loading";
+import GlobalState from '../utils/globalContext.utils.';
 
 const width =  Dimensions.get('window').width;
 
@@ -14,7 +15,10 @@ Font.loadAsync({
 });
 
 export default function Trending() {
-  const [shows, setShows] = useState([]);
+
+  const {shows, setShows} = useContext(GlobalState);
+
+  // const [shows, setShows] = useState([]);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
