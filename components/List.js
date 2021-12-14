@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useContext, useEffect, useState} from 'react'
 import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
-import { style } from 'dom-helpers';
 import { Icon } from 'react-native-elements'
-import { getData } from './utils/storage.utils';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Link } from '@react-navigation/native';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import GlobalContext from './utils/globalContext.utils.'
 
 const width =  Dimensions.get('window').width;
 
@@ -14,7 +12,10 @@ const width =  Dimensions.get('window').width;
 export default function List({shows}) {
   const navigation = useNavigation();
 
+  const {favorites, removeData, addStorageData} = useContext(GlobalContext);
+
     const [img, setImg] = useState('');
+
 
     function getImage(id){
         let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
@@ -31,10 +32,21 @@ export default function List({shows}) {
         }
 
         getImage(shows.item['ids'].tmdb);
-    
+
         function saveFave(id){
-          console.log(id);
+          console.log (`${id} to be added`)
+          // addItemToStorage(id);
+        if(favorites.includes(id)){
+          removeData(id);
+        } else {
+          addStorageData(id);
         }
+        
+        }
+        // useEffect(()=>{
+        // getItemFromStorage();
+        // }, []);
+
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
     return (
@@ -42,9 +54,8 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
-            console.log(`you pressed ${shows.item['ids'].tmdb}` )
+              saveFave(shows.item['ids'].tmdb)
           }}
-          onLongPress={(ev)=> saveFave(shows.item['ids'].tmdb)}
           >
           <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
           </Pressable>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider, Box, Container, VStack } from 'native-base';
@@ -10,12 +10,65 @@ import Trending from './components/screens/Trending';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Favorites from './components/screens/Favorites';
 import Search from './components/screens/Search';
-import Profile from './components/screens/Profile';
+import GlobalContext from './components/utils/globalContext.utils.';
+import {getData} from './components/utils/storage.utils'
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
+
 export default function App() {
+
+  const [faves, setFaves] = useState([]);
+  const { getItem, setItem } = useAsyncStorage('test2');
+
+  const getStorageData = () => {
+    getItem()
+      .then((item) => {
+        //get the value from AsyncStorage and save it in `value`
+        item = item === null ? [] : JSON.parse(item);
+        setFaves(item);
+        console.log(`retrieved data ${faves}`)
+      })
+      .catch(console.log);
+  };
+
+  const addStorageData = (newValue) => {
+    //item in variable is an array
+    setFaves((currentArr) => [newValue, ...currentArr]);
+    //add the newValue to the array and overwrite it in AsyncStorage
+    setItem(JSON.stringify([newValue, ...faves]))
+      .then(() => {
+        console.log('saved new value in array');
+        console.log(faves)
+      })
+      .catch(console.log);
+    //item in AsyncStorage is a String representation of the Array
+  };
+
+  const removeData = (value)=>{
+    let newFaves = faves.filter(item => item != value)
+     setFaves(newFaves);
+     setItem(JSON.stringify(faves))
+     .then(()=>{
+       console.log(`removed ${value}`);
+       console.log(faves);
+     })
+     .catch((error) => console.log(error))
+  }
+
+  const globalData = {
+    favorites: faves,
+    removeData,
+    addStorageData
+  }
+
+useEffect(() => {
+  getStorageData()
+}, [])
+
   return (
+    <GlobalContext.Provider value={globalData}>
     <SafeAreaProvider>
       <NativeBaseProvider>
         <NavigationContainer>
@@ -32,6 +85,7 @@ export default function App() {
         </NavigationContainer>
       </NativeBaseProvider>
     </SafeAreaProvider>
+    </GlobalContext.Provider>
   );
 }
 const styles = StyleSheet.create({
