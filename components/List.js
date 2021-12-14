@@ -15,7 +15,6 @@ export default function List({shows}) {
 
   const {favorites, removeData, addStorageData, faveData, setFaveData} = useContext(GlobalContext);
 
-  
     const [img, setImg] = useState('');
   
     function checkFavorite(id){
@@ -65,7 +64,10 @@ export default function List({shows}) {
         }
 
         
-        getImage(shows.item['ids'].tmdb)
+
+      useEffect(() => {
+        getImage(shows.item['ids'].tmdb);
+      }, [shows])
 
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     

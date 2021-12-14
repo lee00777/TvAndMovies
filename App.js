@@ -21,7 +21,7 @@ export default function App() {
   const [shows, setShows] = useState([]);
   const [faves, setFaves] = useState([]);
   const [faveData, setFaveData] = useState([]);
-  const { getItem, setItem } = useAsyncStorage('test3');
+  const { getItem, setItem } = useAsyncStorage('objtest5');
 
   const getStorageData = () => {
     getItem()
