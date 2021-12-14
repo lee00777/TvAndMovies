@@ -5,17 +5,26 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import GlobalContext from './utils/globalContext.utils.'
 
+
 const width =  Dimensions.get('window').width;
 
 //TODO: placeholder image for images not found
 
 export default function List({shows}) {
   const navigation = useNavigation();
+  
 
   const {favorites, removeData, addStorageData} = useContext(GlobalContext);
 
     const [img, setImg] = useState('');
-
+  
+    function checkFavorite(id){
+      if (favorites.includes(id)) {
+        return true
+      } else {
+        return false
+      }
+    }
 
     function getImage(id){
         let api_key = 'a1b2f514b71b98f4fdeabd6fae26bd24';
@@ -34,8 +43,6 @@ export default function List({shows}) {
         getImage(shows.item['ids'].tmdb);
 
         function saveFave(id){
-          console.log (`${id} to be added`)
-          // addItemToStorage(id);
         if(favorites.includes(id)){
           removeData(id);
         } else {
@@ -43,9 +50,6 @@ export default function List({shows}) {
         }
         
         }
-        // useEffect(()=>{
-        // getItemFromStorage();
-        // }, []);
 
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
@@ -54,10 +58,10 @@ export default function List({shows}) {
           <Pressable  
             style={styles.likeBtn}
             onPress={(ev)=>{
-              saveFave(shows.item['ids'].tmdb)
+              saveFave(shows.item['ids'].trakt)
           }}
           >
-          <Icon name='heart' type='evilicon' color='pink' iconProps={{size:30}}/>
+          <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:30}}/>
           </Pressable>
           <Pressable
           onPress={()=>{

@@ -11,7 +11,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Favorites from './components/screens/Favorites';
 import Search from './components/screens/Search';
 import GlobalContext from './components/utils/globalContext.utils.';
-import {getData} from './components/utils/storage.utils'
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
@@ -20,7 +19,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
 
   const [faves, setFaves] = useState([]);
-  const { getItem, setItem } = useAsyncStorage('test2');
+  const { getItem, setItem } = useAsyncStorage('test3');
 
   const getStorageData = () => {
     getItem()
@@ -28,9 +27,8 @@ export default function App() {
         //get the value from AsyncStorage and save it in `value`
         item = item === null ? [] : JSON.parse(item);
         setFaves(item);
-        console.log(`retrieved data ${faves}`)
       })
-      .catch(console.log);
+      .catch(error => console.log(error));
   };
 
   const addStorageData = (newValue) => {
@@ -38,12 +36,7 @@ export default function App() {
     setFaves((currentArr) => [newValue, ...currentArr]);
     //add the newValue to the array and overwrite it in AsyncStorage
     setItem(JSON.stringify([newValue, ...faves]))
-      .then(() => {
-        console.log('saved new value in array');
-        console.log(faves)
-      })
-      .catch(console.log);
-    //item in AsyncStorage is a String representation of the Array
+      .catch(error => console.log(error));
   };
 
   const removeData = (value)=>{
