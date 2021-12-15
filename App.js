@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider, Box, Container, VStack } from 'native-base';
@@ -18,17 +18,21 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
+  const componentMounted = useRef(false)
+  const [loading, setLoading] = useState(true);
   const [shows, setShows] = useState([]);
   const [faves, setFaves] = useState([]);
   const [faveData, setFaveData] = useState([]);
   const { getItem, setItem } = useAsyncStorage('objtest5');
 
+  //handle storage functions
   const getStorageData = () => {
     getItem()
       .then((item) => {
         //get the value from AsyncStorage and save it in `value`
-        item = item === null ? [] : JSON.parse(item);
-        setFaves(item);
+       item = item === null ? [] : JSON.parse(item);
+       setFaves(item);
+      //  console.log(item);
       })
       .catch(error => console.log(error));
   };
@@ -50,6 +54,38 @@ export default function App() {
      .catch((error) => console.log(error))
   }
 
+  // fetch favorite data from trakt
+  function fetchFaveData(showId){
+    let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+    let url = `https://api.trakt.tv/shows/${showId}?extended`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "trakt-api-key": id,
+        'trakt-api-version': '2'
+      }
+    })
+    .then((resp)=>{
+      if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    })
+    .then((data) => {
+    let results = {data: data, key: data['ids'].trakt}
+      console.log(results)
+    })
+    .catch((error) => {
+      console.log(error);
+
+    });
+    }
+
+        const getFaveData = ()=>{
+        faves.forEach(item => fetchFaveData(item))
+    };
+
+  //add functions and data to userContext
   const globalData = {
     favorites: faves,
     shows: shows,
@@ -61,7 +97,14 @@ export default function App() {
   }
 
 useEffect(() => {
-  getStorageData()
+  getStorageData();
+  getFaveData();
+
+  // faves.length >0 && faves.forEach(item => getFaveData(item))
+  return ()=>{
+    // faves.forEach(item => getFaveData(item));
+    componentMounted.current = true
+  }
 }, [])
 
   return (

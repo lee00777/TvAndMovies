@@ -64,9 +64,18 @@ export default function List({shows}) {
         }
 
         
+        function getData(){
+          let data = shows.map(item=>{
+            for (let i in favorites) {
+              if(item['ids'].trakt === i) return item
+            }
+          })
+          console.log(data);
+        }
 
       useEffect(() => {
         getImage(shows.item['ids'].tmdb);
+        // getData();
       }, [shows])
 
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
