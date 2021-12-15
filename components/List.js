@@ -34,7 +34,8 @@ export default function List({shows}) {
               return resp.json();
           })
           .then((data) => {
-           return setImg(data.poster_path)
+            return data.poster_path = null ? setImg('via.placeholder.com/500') : setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+
           })
           .catch(console.error);
         }
@@ -63,22 +64,16 @@ export default function List({shows}) {
           console.log(faveData);
         }
 
-        
-        function getData(){
-          let data = shows.map(item=>{
-            for (let i in favorites) {
-              if(item['ids'].trakt === i) return item
-            }
-          })
-          console.log(data);
-        }
+        let imgURL = `https://${img}`;
 
       useEffect(() => {
-        getImage(shows.item['ids'].tmdb);
-        // getData();
+        if (shows.item['ids'].tmdb){
+          getImage(shows.item['ids'].tmdb);
+        } else {
+          setImg('via.placeholder.com/500x500?text=No+Image');
+        }
+ 
       }, [shows])
-
-    let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
     return (
         <View style={styles.card}>
