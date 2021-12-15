@@ -68,10 +68,7 @@ export default function App() {
 
 useEffect(() => {
   getStorageData();
-
-  // faves.length >0 && faves.forEach(item => getFaveData(item))
   return ()=>{
-    // faves.forEach(item => getFaveData(item));
     componentMounted.current = true
   }
 }, [])

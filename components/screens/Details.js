@@ -1,8 +1,8 @@
 import { ScrollView } from 'native-base';
 import React, {useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Dimensions, Image} from 'react-native'
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Card, Icon } from 'react-native-elements';
 
 const width =  Dimensions.get('window').width;
 
@@ -82,50 +82,96 @@ export default function Details({navigation, route}) {
           .catch(console.error);
         };
     let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
+
+    const activityIndicator = <ActivityIndicator />
     
     return (
-        <SafeAreaProvider>
-          <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
+        <SafeAreaProvider style={styles.safeArea}>
+          <ScrollView>
+            <Card containerStyle={{fontFamily: 'roboto', borderRadius: 7}}>
+              <Card.Title style={styles.title}>{show.title}</Card.Title>
+              <Card.Image PlaceholderContent={<ActivityIndicator size="large" color="#00ff00" />} style={styles.image} source={{uri: imgURL}} />
+              {/* <Text style={styles.title} >Overview</Text> */}
+              <Text style={styles.text} >{show.overview}</Text>
+              <Card.Divider/>
+              <Text style={styles.text}>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
+              <Text style={styles.text}>Network: {show.network} / {show.country}</Text>
+              <Text style={styles.text}>Current status: {show.status}</Text>
+              <Text style={styles.text}>Total Episodes: {show.aired_episodes}</Text>
+              <Card.Divider/>
+              <View style={styles.nextEp}>
+                  <Card.FeaturedTitle  style={styles.featTitle}>Next Episode</Card.FeaturedTitle>
+                  <Text  style={styles.text}>Title: {nextEpisode.title} </Text>
+                  <Text  style={styles.text}>Date: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
+              </View>
+              <Card.Divider/>
+              <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
             <Icon name='arrowleft' type='antdesign' size={25} color='white'/>
           } />
-          <ScrollView style={styles.card}>
-              <Image style={styles.image} source={{uri: imgURL}} />
-              <View style={styles.overview}>
-              <Text style={styles.overviewTitle} >Overview:</Text>
-              <Text>{show.overview}</Text>
-              </View>
-              <Text>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
-              <Text>Network: {show.network} / {show.country}</Text>
-              <Text>Current status: {show.status}</Text>
-              <Text>Total Episodes: {show.aired_episodes}</Text>
-              <View style={styles.nextEp}>
-                  <Text>Next Episode</Text>
-                  <Text>Title: {nextEpisode.title} </Text>
-                  <Text>Next Episode: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
-              </View>
+              </Card>
           </ScrollView>
         </SafeAreaProvider>
     )
 }
 
 const styles = StyleSheet.create({
-    // card:{
-    //   alignSelf:"flex-start",
-    //   flexShrink: 1,
-    //   width:(width/3)-20,
-    // },
-    image: {
-      width:(width/2)-20,
-      height:(width/1)-20,
-      borderRadius:7,
-      marginLeft: 10,
-      marginTop:20,
-      justifyContent: 'center'
-    },
-    overview: {
-      
-    },
-    overviewTitle: {
-        fontWeight: 'bold'
-    },
+  safeArea:{
+    flex: 1,  
+    resizeMode: 'center', 
+    backgroundColor:'#202124',
+    justifyContent: 'flex-start',
+  },
+  image:{
+    margin: 10,
+    borderRadius: 7,
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  featTitle: {
+    color: 'black',
+    textAlign: 'center'
+  }
+  // card:{
+  //   borderWidth: 2,
+  //   backgroundColor: '#0F0F0F',
+  //   shadowColor: 'white',
+  //   shadowRadius: 50,
+  //   marginHorizontal: 10,
+  //   padding: 5,
+  //   borderRadius: 20
+  // },
+  // image: {
+  //   width:(width/3)-20,
+  //   height:(width/2)-20,
+  //   borderRadius:7,
+  //   marginTop:20
+  // },
+  //   image: {
+  //     width:(width/2)-20,
+  //     height:(width/1)-20,
+  //     borderRadius:7,
+  //     marginLeft: 10,
+  //     marginTop:20,
+  //     marginBottom: 10,
+  //     justifyContent: 'center',
+  //     alignSelf: 'center'
+  //   },
+  //   text:{
+  //     paddingLeft: 10,
+  //     fontFamily:"roboto",
+  //     fontSize: 16,
+  //     color:"#fff",
+  //     paddingBottom: 10
+  //   },
+  //   title:{
+  //     textAlign: 'center',
+  //     fontFamily:"roboto",
+  //     fontSize: 20,
+  //     color:"#fff",
+  //     fontWeight: 'bold',
+  //     paddingBottom: 10
+  //   }
 })

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { View, Text, FlatList, StatusBar, StyleSheet, Dimensions, Pressable, ActivityIndicator } from 'react-native'
+import { Icon, Image } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import GlobalContext from './utils/globalContext.utils.'
 
@@ -90,7 +90,7 @@ export default function List({shows}) {
             console.log(`you pressed ${shows.item['ids'].tmdb}`)
           }}
           >
-          <Image style={styles.image} source={{uri: imgURL}} />
+          <Image PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
           </Pressable>
           <Text style={styles.title}> {shows.item['title']}</Text> 
           <Text style={styles.released_year}> {shows.item['year']}</Text>
