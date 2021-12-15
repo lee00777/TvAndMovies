@@ -1,10 +1,11 @@
 import { ScrollView } from 'native-base';
 import React, {useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Dimensions, Image} from 'react-native'
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Card, Header, Icon, Image } from 'react-native-elements';
 
 const width =  Dimensions.get('window').width;
+const height =  Dimensions.get('window').height;
 
 export default function Details({navigation, route}) {
   //TODO: fix JSON Parse error: Unexpected EOF
@@ -32,6 +33,7 @@ export default function Details({navigation, route}) {
             return resp.json();
         })
         .then((data) => {
+          console.log(data);
             setShow(data);
             getImage(data['ids'].tmdb);
             getNextEpisode(data['ids'].trakt);
@@ -81,27 +83,38 @@ export default function Details({navigation, route}) {
           })
           .catch(console.error);
         };
-    let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
+    let imgURL = `https://image.tmdb.org/t/p/w500/${img}`;
     
     return (
-        <SafeAreaProvider>
-          <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
+        <SafeAreaProvider style={styles.safeArea}>
+          <ScrollView>
+            <View style={styles.card}>
+              <Text style={styles.title}>{show.title}</Text>
+              <Image title={show.title} PlaceholderContent={<ActivityIndicator size="large" color="#00ff00" />} style={styles.image} source={{uri: imgURL}} />
+              {/* <Text style={styles.title} >Overview</Text> */}
+              <Text style={styles.text} >{show.overview}</Text>
+              <View style={styles.basicInfo}>
+              <Text style={styles.basicInfoText}>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
+              <Text style={styles.basicInfoText}>Network: {show.network} / {show.country}</Text>
+              <Text style={styles.basicInfoText}>Current status: {show.status}</Text>
+              <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
+              </View>
+              
+              <View style={styles.nextEp}>
+                {
+                  nextEpisode ? <>
+                  <Text  style={styles.featTitle}>Next Episode</Text>
+                  <Text  style={styles.text}>Title: {nextEpisode.title ? nextEpisode.title : "Not Available"} </Text>
+                  <Text  style={styles.text}>Date: {nextEpisode.first_aired ? new Date(nextEpisode.first_aired).toLocaleDateString() : "Not Available"}</Text>
+                  </>
+                  :
+                  <>
+                  </>
+                }
+            </View>
+              <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
             <Icon name='arrowleft' type='antdesign' size={25} color='white'/>
           } />
-          <ScrollView style={styles.card}>
-              <Image style={styles.image} source={{uri: imgURL}} />
-              <View style={styles.overview}>
-              <Text style={styles.overviewTitle} >Overview:</Text>
-              <Text>{show.overview}</Text>
-              </View>
-              <Text>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
-              <Text>Network: {show.network} / {show.country}</Text>
-              <Text>Current status: {show.status}</Text>
-              <Text>Total Episodes: {show.aired_episodes}</Text>
-              <View style={styles.nextEp}>
-                  <Text>Next Episode</Text>
-                  <Text>Title: {nextEpisode.title} </Text>
-                  <Text>Next Episode: {new Date(nextEpisode.first_aired).toLocaleDateString()}</Text>
               </View>
           </ScrollView>
         </SafeAreaProvider>
@@ -109,23 +122,49 @@ export default function Details({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-    // card:{
-    //   alignSelf:"flex-start",
-    //   flexShrink: 1,
-    //   width:(width/3)-20,
-    // },
-    image: {
-      width:(width/2)-20,
-      height:(width/1)-20,
-      borderRadius:7,
-      marginLeft: 10,
-      marginTop:20,
-      justifyContent: 'center'
-    },
-    overview: {
-      
-    },
-    overviewTitle: {
-        fontWeight: 'bold'
-    },
+  safeArea:{
+    flex: 1,  
+    resizeMode: 'center', 
+    backgroundColor:'#202124',
+    justifyContent: 'flex-start',
+  },
+  card:{
+    borderRadius: 7,
+    margin: 5
+  },
+  image:{
+    borderRadius: 20,
+    alignSelf: 'center',
+    width:(width/2)-20,
+    height:(width)-20,
+    margin: 10
+  },
+  nextEp: {
+    marginVertical: 5,
+  },
+  title: {
+    margin: 10,
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center'
+  },
+  featTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  basicInfo: {
+    margin: 5,
+  },
+  basicInfoText:{
+    color: '#fff',
+    textTransform: 'capitalize'
+  },
+  text: {
+    color: '#fff',
+    textAlign: 'justify',
+    padding: 5
+  }
 })

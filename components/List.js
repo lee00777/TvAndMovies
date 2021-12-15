@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { View, Text, FlatList, StatusBar, StyleSheet, Image, Dimensions, Pressable } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { View, Text, FlatList, StatusBar, StyleSheet, Dimensions, Pressable, ActivityIndicator } from 'react-native'
+import { Icon, Image } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import GlobalContext from './utils/globalContext.utils.'
 
@@ -34,7 +34,8 @@ export default function List({shows}) {
               return resp.json();
           })
           .then((data) => {
-           return setImg(data.poster_path)
+            return data.poster_path = null ? setImg('via.placeholder.com/500') : setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+
           })
           .catch(console.error);
         }
@@ -53,23 +54,24 @@ export default function List({shows}) {
         function addFaveData(){
           setFaveData((old)=> [shows.item, ...old])
           console.log(`added ${shows.item.title}`);
-          console.log(faveData)
         }
 
         function removeFaveData(id){
           let newData = faveData.filter(item => item['ids'].trakt != id);
           setFaveData(newData);
           console.log(`removed ${shows.item.title}`);
-          console.log(faveData);
         }
 
-        
+        let imgURL = `https://${img}`;
 
       useEffect(() => {
-        getImage(shows.item['ids'].tmdb);
+        if (shows.item['ids'].tmdb){
+          getImage(shows.item['ids'].tmdb);
+        } else {
+          setImg('via.placeholder.com/500x500?text=No+Image');
+        }
+ 
       }, [shows])
-
-    let imgURL = `https://image.tmdb.org/t/p/w500${img}`;
     
     return (
         <View style={styles.card}>
@@ -88,7 +90,7 @@ export default function List({shows}) {
             console.log(`you pressed ${shows.item['ids'].tmdb}`)
           }}
           >
-          <Image style={styles.image} source={{uri: imgURL}} />
+          <Image PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
           </Pressable>
           <Text style={styles.title}> {shows.item['title']}</Text> 
           <Text style={styles.released_year}> {shows.item['year']}</Text>

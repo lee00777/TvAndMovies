@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider, Box, Container, VStack } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,17 +18,21 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
+  const componentMounted = useRef(false)
+  const [loading, setLoading] = useState(true);
   const [shows, setShows] = useState([]);
   const [faves, setFaves] = useState([]);
   const [faveData, setFaveData] = useState([]);
   const { getItem, setItem } = useAsyncStorage('objtest5');
 
+  //handle storage functions
   const getStorageData = () => {
     getItem()
       .then((item) => {
         //get the value from AsyncStorage and save it in `value`
-        item = item === null ? [] : JSON.parse(item);
-        setFaves(item);
+       item = item === null ? [] : JSON.parse(item);
+       setFaves(item);
+      //  console.log(item);
       })
       .catch(error => console.log(error));
   };
@@ -50,6 +54,8 @@ export default function App() {
      .catch((error) => console.log(error))
   }
 
+  
+  //add functions and data to userContext
   const globalData = {
     favorites: faves,
     shows: shows,
@@ -61,7 +67,10 @@ export default function App() {
   }
 
 useEffect(() => {
-  getStorageData()
+  getStorageData();
+  return ()=>{
+    componentMounted.current = true
+  }
 }, [])
 
   return (
