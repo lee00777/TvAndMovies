@@ -17,8 +17,6 @@ Font.loadAsync({
 export default function Trending() {
 
   const {shows, setShows} = useContext(GlobalState);
-
-  // const [shows, setShows] = useState([]);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider, Box, Container, VStack } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
