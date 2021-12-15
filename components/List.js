@@ -54,14 +54,12 @@ export default function List({shows}) {
         function addFaveData(){
           setFaveData((old)=> [shows.item, ...old])
           console.log(`added ${shows.item.title}`);
-          console.log(faveData)
         }
 
         function removeFaveData(id){
           let newData = faveData.filter(item => item['ids'].trakt != id);
           setFaveData(newData);
           console.log(`removed ${shows.item.title}`);
-          console.log(faveData);
         }
 
         let imgURL = `https://${img}`;

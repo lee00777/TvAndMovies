@@ -42,8 +42,8 @@ export default function Trending() {
         return resp.json();
     })
     .then((data) => {
-      let results = data.map((item, index) => {
-        return {...item.show, key: index + 10}
+      let results = data.map((item) => {
+        return {...item.show, key: item.show['ids'].trakt}
       });
       setShows(results);
       setIsRefreshing(false);

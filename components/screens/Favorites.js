@@ -16,7 +16,6 @@ export default function Favorites() {
     useEffect(() => {
         getFaveData();
         return ()=>{
-          // faves.forEach(item => getFaveData(item));
           componentMounted.current = true
         }
       }, [])
@@ -38,8 +37,9 @@ export default function Favorites() {
             return resp.json();
         })
         .then((data) => {
-          console.log(data);
-          setFaveData((old)=> [data, ...old]);
+          let results = data;
+          results.key = data['ids'].trakt;
+          setFaveData((old)=> [results, ...old]);
         })
         .catch((error) => {
           console.log(error);
