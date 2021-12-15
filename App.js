@@ -32,6 +32,7 @@ export default function App() {
         //get the value from AsyncStorage and save it in `value`
        item = item === null ? [] : JSON.parse(item);
        setFaves(item);
+       setLoading(false);
       //  console.log(item);
       })
       .catch(error => console.log(error));
@@ -54,25 +55,54 @@ export default function App() {
      .catch((error) => console.log(error))
   }
 
-  
+  //get FaveData
+  function fetchFaveData(showId){
+    let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+    let url = `https://api.trakt.tv/shows/${showId}?extended`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "trakt-api-key": id,
+        'trakt-api-version': '2'
+      }
+    })
+    .then((resp)=>{
+      if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    })
+    .then((data) => {
+      let results = data;
+      results.key = data['ids'].trakt;
+      setFaveData((old)=> [results, ...old]);
+    })
+    .catch((error) => {
+      console.log(error);
+
+    });
+    }
+    const getFaveData = ()=>{
+      faves.forEach(item => fetchFaveData(item))
+  };
   //add functions and data to userContext
   const globalData = {
-    favorites: faves,
-    shows: shows,
-    faveData: faveData,
     setFaveData,
     setShows,
     removeData,
-    addStorageData
+    addStorageData,
+    favorites: faves,
+    shows: shows,
+    faveData: faveData,
   }
 
 useEffect(() => {
   getStorageData();
-  return ()=>{
-    componentMounted.current = true
-  }
-}, [])
-
+   if(loading) return
+   else {
+    getFaveData();
+   }
+}, [loading])
   return (
     <GlobalContext.Provider value={globalData}>
     <SafeAreaProvider>
