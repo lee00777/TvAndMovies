@@ -6,6 +6,7 @@ import List from '../List';
 import * as Font from "expo-font";
 import Apploading from "expo-app-loading";
 import GlobalState from '../utils/globalContext.utils.';
+import { StatusBar } from 'expo-status-bar';
 
 const width =  Dimensions.get('window').width;
 
@@ -90,6 +91,7 @@ export default function Trending() {
             keyExtractor={item => item.key}
           />
         </Animated.View>
+        <StatusBar style="auto" />
       </SafeAreaView>
     );
   } else {
