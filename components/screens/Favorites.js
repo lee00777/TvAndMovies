@@ -8,21 +8,14 @@ import { StatusBar } from 'expo-status-bar';
 
 export default function Favorites() {
   const {faveData, favorites} = useContext(GlobalContext);
-
-
-    const animation = useRef(new Animated.Value(0)).current;
-
-    const fadeIn = Animated.timing(animation, {
-      toValue: 1,
-      duration: 700,
-      useNativeDriver: true,
-    }).start();
+  const animation = useRef(new Animated.Value(0)).current;
+  const fadeIn = Animated.timing(animation, {
+    toValue: 1,
+    duration: 700,
+    useNativeDriver: true,
+  }).start();
 
   useEffect(() => {
-    // setTimeout(()=>{
-    //   console.log("ㅆㅆㅆㅆㅆㅆㅆㅆ")
-    //   StoreReview.requestReview()
-    // },3000)
     if(favorites.length >= 3){
       StoreReview.requestReview()
     }
@@ -31,19 +24,17 @@ export default function Favorites() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <Text style={styles.header}>Favorites</Text>
- <Animated.View style={{
-                opacity: animation
-              }}>
-      <FlatList 
-        data={faveData}
-        numColumns={3}
-        columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-        renderItem={(item)=>( <List shows={item} />)}
-        ListEmptyComponent={<Text style={styles.noFavItemMsg}> No Favorite Item </Text>}
-        keyExtractor={item => item.key}
-      />
-              </Animated.View>
-              <StatusBar style="auto" />
+      <Animated.View style={{opacity: animation}}>
+        <FlatList 
+          data={faveData}
+          numColumns={3}
+          columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+          renderItem={(item)=>( <List shows={item} />)}
+          ListEmptyComponent={<Text style={styles.noFavItemMsg}> No Favorite Item </Text>}
+          keyExtractor={item => item.key}
+        />
+      </Animated.View>
+      <StatusBar style="auto" />
     </SafeAreaView>
   )
 }

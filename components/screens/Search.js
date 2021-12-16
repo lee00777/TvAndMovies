@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated,Platform} from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
 
@@ -12,13 +12,12 @@ export default function Search() {
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
-        
-            const animation = useRef(new Animated.Value(0)).current;
-     const fadeIn = Animated.timing(animation, {
-      toValue: 1,
-      duration: 700,
-      useNativeDriver: true,
-    }).start();
+  const animation = useRef(new Animated.Value(0)).current;
+  const fadeIn = Animated.timing(animation, {
+    toValue: 1,
+    duration: 700,
+    useNativeDriver: true,
+  }).start();
 
   function getRecommended(){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
@@ -65,109 +64,101 @@ export default function Search() {
         ]
       );
     }
-      let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
-      let url = `https://api.trakt.tv/search/show?query=${query}`;
-  
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          "trakt-api-key": id,
-          'trakt-api-version': '2'
-        }
-      })
-      .then((resp)=>{
-        if (!resp.ok) throw new Error(resp.statusText);
-          return resp.json();
-      })
-      .then((data) => {
-        let results = data.map((item) => {
-          return {...item.show, key: item.show['ids'].trakt}
-        });
-        setShows(results);
-        setIsRefreshing(false);
-        setLoading(false);
-        setError("")
-      })
-      .catch((error) => {
-        console.error;
-        setIsRefreshing(false);
-        setLoading(true);
-        setError(err.message);
-        setShows([])
+    let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+    let url = `https://api.trakt.tv/search/show?query=${query}`;
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "trakt-api-key": id,
+        'trakt-api-version': '2'
+      }
+    })
+    .then((resp)=>{
+      if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    })
+    .then((data) => {
+      let results = data.map((item) => {
+        return {...item.show, key: item.show['ids'].trakt}
       });
-    }
+      setShows(results);
+      setIsRefreshing(false);
+      setLoading(false);
+      setError("")
+    })
+    .catch((error) => {
+      console.error;
+      setIsRefreshing(false);
+      setLoading(true);
+      setError(err.message);
+      setShows([])
+    });
+  }
   useEffect(() => {
     getRecommended();
   }, [])
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
-      <Text style={styles.header}>Find a TV Show</Text>
-      <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } 
-      onSubmitEditing={()=> getData(search)}/>
+      <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
+      <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/>
         { shows.length == 0 ? 
-            <> 
-              <Text style={styles.subHeader}>Recommended</Text>
-          <Animated.View style={{
-                opacity: animation
-              }}>
+          <> 
+            <Text style={styles.subHeader}>Recommended</Text>
+            <Animated.View style={{opacity: animation}}>
               <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
               renderItem={(item)=>( <List shows={item} />)}/> 
-                 </Animated.View>
-            </> : 
- <Animated.View style={{
-                opacity: animation
-              }}>
-          <FlatList 
-            data={shows}
-            numColumns={3}
-            columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-            renderItem={(item)=>( <List shows={item} />)}
-          keyExtractor={item => item.key}
-        />
-         </Animated.View>
+            </Animated.View>
+          </> : 
+            <Animated.View style={{opacity: animation}}>
+              <FlatList 
+                data={shows}
+                numColumns={3}
+                columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+                renderItem={(item)=>( <List shows={item} />)}
+              keyExtractor={item => item.key}/>
+          </Animated.View>
         }
     </SafeAreaView>
   )
 }
 
-
 const styles = StyleSheet.create({
-    safeArea:{
-      flex: 1,  
-      resizeMode: 'center', 
-      backgroundColor:'#202124',
-      justifyContent: 'flex-start',
-    },
-    header:{
-      fontSize: 20,
-      color:"#fff",
-      textAlign:'left',
-      marginLeft:15,
-      paddingTop: 15
-    },
-    subHeader:{
-      fontSize: 15,
-      color:"#fff",
-      textAlign:'left',
-      marginLeft:15,
-    },
-    briefInfo:{
-      flexWrap:"wrap",
-      flexDirection:"row",
-    },
-    loading:{
-      color:"#000",
-      textAlign:"center",
-      fontSize:18,
-      marginTop:50
-    },
-    input:{
-        color: 'white',
-        marginLeft:5,
-        fontSize:15
-    },
-    fadingContainer: {
-        padding: 20,
-      },
-  })
+  safeArea:{
+    flex: 1,  
+    resizeMode: 'center', 
+    backgroundColor:'#202124',
+    justifyContent: 'flex-start',
+  },
+  header:{
+    fontSize: 20,
+    color:"#fff",
+    textAlign:'left',
+    marginLeft:10,
+    paddingTop: 15
+  },
+  subHeader:{
+    fontSize: 15,
+    color:"#fff",
+    textAlign:'left',
+    marginLeft:10,
+  },
+  briefInfo:{
+    flexWrap:"wrap",
+    flexDirection:"row",
+  },
+  loading:{
+    color:"#000",
+    textAlign:"center",
+    fontSize:18,
+    marginTop:50
+  },
+  input:{
+    color: 'white',
+    marginLeft:5,
+    fontSize:15
+  },
+  fadingContainer: {
+    padding: 20,
+  },
+})
