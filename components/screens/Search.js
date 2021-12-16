@@ -1,10 +1,20 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform } from 'react-native'
-import { Input } from 'react-native-elements';
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, Button} from 'react-native'
+import { Input, Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
+// search bar
+import { Feather, Entypo,Ionicons } from "@expo/vector-icons";
 import List from '../List';
+// import { HeaderBackButton } from '@react-navigation/elements';
+import { HeaderBackButton } from '@react-navigation/stack';
 
-export default function Search() {
+const navigationOptions = (navigation => {
+  return{
+    headerLeft:(<HeaderBackButton onPress={()=>{navigation.navigate('Favorites')}}/>)
+ }
+})
+
+export default function Search({navigation}) {
   //TODO: fix spell checker
   const [shows, setShows] = useState([]);
   const [recommended, setRecommended] = useState([])
@@ -13,6 +23,15 @@ export default function Search() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const animation = useRef(new Animated.Value(0)).current;
+
+  const [clicked, setClicked] = useState(false);
+
+  // const navigationOptions = (navigation => {
+  //   return{
+  //     headerLeft:(<HeaderBackButton onPress={()=>{navigation.navigate('Favorites')}}/>)
+  //  }
+  // })
+
   const fadeIn = Animated.timing(animation, {
     toValue: 1,
     duration: 700,
@@ -100,13 +119,42 @@ export default function Search() {
   useEffect(() => {
     getRecommended();
   }, [])
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
-        
-    
-        <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/>
+        {/* <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/> */}
+        <View style={styles.container}>
+          <View style={ !clicked ? styles.searchBar__unclicked : styles.searchBar__clicked}>
+            {/* search Icon */}
+            { clicked ? <Ionicons name="arrow-back-sharp" size={20} color="black" style={{ marginLeft: 1 }} onPress={()=>{
+                Keyboard.dismiss();
+                setClicked(false);
+                // navigation.goBack()
+                navigationOptions()
+            }} /> 
+              : <Feather name="search" size={20} color="black" style={{ marginLeft: 1 }}/>}
+            {/* Input field */}
+            <TextInput style={styles.input} placeholder="Search" value={search} onChangeText={(value)=> setSearch(value) }
+              onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
+            {/* cross Icon, depending on whether the search bar is clicked or not */}
+            {clicked && (<Entypo name="cross" size={26} color="black" style={{ padding: 1 }} 
+              onPress={() => { setSearch("")}}/>)}
+          </View>
+          {clicked && (
+            <View>
+              <Button
+                title="Cancel"
+                onPress={() => {
+                  Keyboard.dismiss();
+                  setClicked(false);
+                }}
+              ></Button>
+            </View>
+          )}
+        </View>
+
           { shows.length == 0 ? 
             <> 
               <Text style={styles.subHeader}>Recommended</Text>
@@ -161,11 +209,52 @@ const styles = StyleSheet.create({
     marginTop:50
   },
   input:{
+    flex: 1,
     color: 'white',
     marginLeft:5,
     fontSize:15
   },
   fadingContainer: {
     padding: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#000',
+    paddingBottom: 10,
+  },
+  backIcon: {
+    marginTop:20,
+    marginLeft:10
+  },
+  container: {
+    margin: 15,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "90%",
+
+  },
+  searchBar__unclicked: {
+    padding: 10,
+    flexDirection: "row",
+    width: "95%",
+    backgroundColor: "#d9dbda",
+    borderRadius: 15,
+    alignItems: "center",
+  },
+  searchBar__clicked: {
+    padding: 10,
+    flexDirection: "row",
+    width: "80%",
+    backgroundColor: "#d9dbda",
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  input: {
+    fontSize: 20,
+    marginLeft: 10,
+    width: "90%",
   },
 })
