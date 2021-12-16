@@ -90,10 +90,14 @@ export default function Details({navigation, route}) {
           {/* <Text style={styles.title} >Overview</Text> */}
           <Text style={styles.text} >{show.overview}</Text>
           <View style={styles.basicInfo}>
-          <Text style={styles.basicInfoText}>First air date: {new Date(show.first_aired).toLocaleDateString()}</Text>
-          <Text style={styles.basicInfoText}>Network: {show.network} / {show.country}</Text>
-          <Text style={styles.basicInfoText}>Current status: {show.status}</Text>
+          <Text style={styles.basicInfoText}>First Air Date: {new Date(show.first_aired).toLocaleDateString()}</Text>
+          <Text style={styles.basicInfoText}>Network: {show.network.toUpperCase()} / {show.country.toUpperCase()}</Text>
           <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
+          <Text style={styles.status}>Current Status: {show.status}</Text>
+          {
+            show.airs &&
+          <Text style={styles.basicInfoText}>Airs: {show.airs.day} @ {show.airs.time} ({show.airs['timezone'].replace('_', ' ')})</Text>
+          }
           </View>
           
           <View style={styles.nextEp}>
@@ -152,6 +156,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   basicInfoText:{
+    color: '#fff',
+  },
+  status: {
     color: '#fff',
     textTransform: 'capitalize'
   },
