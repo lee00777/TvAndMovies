@@ -30,9 +30,9 @@ export default function App() {
     getItem()
       .then((item) => {
         //get the value from AsyncStorage and save it in `value`
-       item = item === null ? [] : JSON.parse(item);
-       setFaves(item);
-       setLoading(false);
+        item = item === null ? [] : JSON.parse(item);
+        setFaves(item);
+        setLoading(false);
       //  console.log(item);
       })
       .catch(error => console.log(error));
@@ -48,11 +48,11 @@ export default function App() {
 
   const removeData = (value)=>{
     let newFaves = faves.filter(item => item != value)
-     setFaves(newFaves);
-     setItem(JSON.stringify(faves))
-     .then(()=>{
-     })
-     .catch((error) => console.log(error))
+      setFaves(newFaves);
+      setItem(JSON.stringify(faves))
+      .then(()=>{
+      })
+      .catch((error) => console.log(error))
   }
 
   //get FaveData
@@ -98,29 +98,29 @@ export default function App() {
 
 useEffect(() => {
   getStorageData();
-   if(loading) return
-   else {
+  if(loading) return
+  else {
     getFaveData();
-   }
+  }
 }, [loading])
   return (
     <GlobalContext.Provider value={globalData}>
-    <SafeAreaProvider>
-      <NativeBaseProvider>
-        <NavigationContainer>
-          <Tab.Navigator initialRouteName='Home'>
-            <Tab.Screen name="Home" component={Trending} options={{
-              tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />)}} />
-            <Tab.Screen name="Find" component={Search}  options={{
-              tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={color} />)}}/>
-            <Tab.Screen name="Favorites" component={Favorites}  options={{
-              tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'star' : 'star-outline'} size={size} color={color} />) }}/>
-            <Tab.Screen name="Details" component={Details} options={{tabBarButton: () => null,
-        tabBarVisible: false}} />
-          </Tab.Navigator>
-        </NavigationContainer>
-      </NativeBaseProvider>
-    </SafeAreaProvider>
+      <SafeAreaProvider>
+        <NativeBaseProvider>
+          <NavigationContainer>
+            <Tab.Navigator initialRouteName='Home'>
+              <Tab.Screen name="Home" component={Trending} options={{
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />)}} />
+              <Tab.Screen name="Find" component={Search}  options={{
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={color} />)}}/>
+              <Tab.Screen name="Favorites" component={Favorites}  options={{
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'star' : 'star-outline'} size={size} color={color} />) }}/>
+              <Tab.Screen name="Details" component={Details} options={{tabBarButton: () => null,
+              tabBarVisible: false}} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </NativeBaseProvider>
+      </SafeAreaProvider>
     </GlobalContext.Provider>
   );
 }

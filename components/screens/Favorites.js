@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Platform} from 'react-native'
 import React, {useState, useEffect, useContext} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';
@@ -8,12 +8,10 @@ export default function Favorites() {
   const {faveData} = useContext(GlobalContext);
 
   useEffect(() => {
-    if(faveData.length >= 1){
-      StoreReview.requestReview();
-    }
-    // setTimeout(()=>{
-    //   StoreReview.requestReview()
-    // },5000)
+    setTimeout(()=>{
+      console.log("ㅆㅆㅆㅆㅆㅆㅆㅆ")
+      StoreReview.requestReview()
+    },3000)
   }, [])
 
   return (
@@ -27,6 +25,7 @@ export default function Favorites() {
         ListEmptyComponent={<Text style={styles.noFavItemMsg}> No Favorite Item </Text>}
         keyExtractor={item => item.key}
       />
+      
     </SafeAreaView>
   )
 }
