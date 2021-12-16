@@ -6,7 +6,7 @@ import List from '../List';
 import * as StoreReview from 'expo-store-review';
 
 export default function Favorites() {
-  const {faveData} = useContext(GlobalContext);
+  const {faveData, favorites} = useContext(GlobalContext);
 
 
     const animation = useRef(new Animated.Value(0)).current;
@@ -18,11 +18,14 @@ export default function Favorites() {
     }).start();
 
   useEffect(() => {
-    setTimeout(()=>{
-      console.log("ㅆㅆㅆㅆㅆㅆㅆㅆ")
+    // setTimeout(()=>{
+    //   console.log("ㅆㅆㅆㅆㅆㅆㅆㅆ")
+    //   StoreReview.requestReview()
+    // },3000)
+    if(favorites.length >= 3){
       StoreReview.requestReview()
-    },3000)
-  }, [])
+    }
+  }, [favorites])
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>

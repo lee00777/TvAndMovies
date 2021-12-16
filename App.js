@@ -12,6 +12,7 @@ import Favorites from './components/screens/Favorites';
 import Search from './components/screens/Search';
 import GlobalContext from './components/utils/globalContext.utils.';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { StatusBar } from 'expo-status-bar';
 
 const Tab = createBottomTabNavigator();
 
@@ -118,6 +119,7 @@ useEffect(() => {
               <Tab.Screen name="Details" component={Details} options={{tabBarButton: () => null,
               tabBarVisible: false}} />
             </Tab.Navigator>
+            <StatusBar style="auto" />
           </NavigationContainer>
         </NativeBaseProvider>
       </SafeAreaProvider>
