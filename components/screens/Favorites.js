@@ -1,15 +1,25 @@
-import React, {useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
+import React, {useContext, useRef} from 'react'
+import { Animated, Text, SafeAreaView, StyleSheet, FlatList } from 'react-native'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';
 
 export default function Favorites() {
     const {faveData} = useContext(GlobalContext);
 
+    const animation = useRef(new Animated.Value(0)).current;
+
+    const fadeIn = Animated.timing(animation, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true,
+    }).start();
 
     return (
         <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
                <Text style={styles.header}>Favorites</Text>
+               <Animated.View style={{
+                opacity: animation
+              }}>
                <FlatList 
               data={faveData}
               numColumns={3}
@@ -17,6 +27,7 @@ export default function Favorites() {
               renderItem={(item)=>( <List shows={item} />)}
             keyExtractor={item => item.key}
           />
+          </Animated.View>
         </SafeAreaView>
     )
 }

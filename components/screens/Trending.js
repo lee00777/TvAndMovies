@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, FlatList, StyleSheet, Dimensions} from 'react-native'
+import { Animated, Text, FlatList, StyleSheet, Dimensions} from 'react-native'
 import List from '../List';
 //  app-loading & font
 import * as Font from "expo-font";
@@ -21,6 +21,17 @@ export default function Trending() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+//animation config
+  const animation = useRef(new Animated.Value(0)).current;
+
+  const fadeIn = Animated.timing(animation, {
+    toValue: 1,
+    duration: 700,
+    useNativeDriver: true,
+  }).start();
+
+
 
   //tv shows data
   function getShows(){
@@ -65,6 +76,10 @@ if (isFontLoaded) {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <Text style={styles.header}>Trending Shows</Text>
+      <Text style={styles.header}>Favorites</Text>
+               <Animated.View style={{
+                opacity: animation
+              }}>
       <FlatList 
         data={shows}
         numColumns={3}
@@ -80,6 +95,7 @@ if (isFontLoaded) {
         ListEmptyComponent={<Text> Loading ...</Text>}
         keyExtractor={item => item.key}
       />
+      </Animated.View>
     </SafeAreaView>
   );
 } else {
