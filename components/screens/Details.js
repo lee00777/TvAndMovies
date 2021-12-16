@@ -1,9 +1,10 @@
 import { ScrollView } from 'native-base';
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, Card, Header, Icon, Image } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
+import YoutubePlayer from "react-native-youtube-iframe";
 
 const width =  Dimensions.get('window').width;
 const height =  Dimensions.get('window').height;
@@ -14,6 +15,23 @@ export default function Details({navigation, route}) {
   const [show, setShow] = useState([]);
   const [nextEpisode, setNextEpisode] = useState([]);
   let imgURL = `https://image.tmdb.org/t/p/w500/${img}`;
+
+
+  //youtube player state variables
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+      Alert.alert("video has finished playing!");
+    }
+  }, []);
+
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev);
+  }, []);
+
+
 
   function getDetails(showId){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
@@ -31,7 +49,6 @@ export default function Details({navigation, route}) {
         return resp.json();
     })
     .then((data) => {
-      console.log(data);
         setShow(data);
         getImage(data['ids'].tmdb);
         getNextEpisode(data['ids'].trakt);
@@ -91,7 +108,7 @@ export default function Details({navigation, route}) {
           <Text style={styles.text} >{show.overview}</Text>
           <View style={styles.basicInfo}>
           <Text style={styles.basicInfoText}>First Air Date: {new Date(show.first_aired).toLocaleDateString()}</Text>
-          <Text style={styles.basicInfoText}>Network: {show.network.toUpperCase()} / {show.country.toUpperCase()}</Text>
+          <Text style={styles.basicInfoText}>Network: {show['network'] ? show['network'] : 'Not Available'} / {show.country ? show.country.toUpperCase() : show.country}</Text>
           <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
           <Text style={styles.status}>Current Status: {show.status}</Text>
           {
@@ -108,6 +125,18 @@ export default function Details({navigation, route}) {
               </>
               :<> </>
             }
+         {
+           show.trailer &&
+       <View style={styles.trailer}>
+         <Text style={styles.featTitle}>Trailer</Text>
+      <YoutubePlayer
+        height={200}
+        play={playing}
+        videoId={show.trailer.replace('https://youtube.com/watch?v=', '')}
+        onChangeState={onStateChange}
+      />
+    </View>
+         }
         </View>
           <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
           <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} />
@@ -147,6 +176,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   featTitle: {
+    paddingVertical: 10,
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
@@ -166,5 +196,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'justify',
     padding: 5
+  },
+  trailer: {
+    paddingTop: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 5
   }
 })
