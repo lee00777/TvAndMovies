@@ -1,5 +1,5 @@
 
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Platform} from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Platform, Animated} from 'react-native'
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';

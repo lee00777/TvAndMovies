@@ -124,8 +124,8 @@ export default function Search() {
             columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
             renderItem={(item)=>( <List shows={item} />)}
           keyExtractor={item => item.key}
- </Animated.View>
         />
+         </Animated.View>
         }
     </SafeAreaView>
   )
