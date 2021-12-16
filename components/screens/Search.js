@@ -1,6 +1,7 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated,Platform} from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform } from 'react-native'
 import { Input } from 'react-native-elements';
+import { StatusBar } from 'expo-status-bar';
 import List from '../List';
 
 export default function Search() {
@@ -55,7 +56,6 @@ export default function Search() {
   //tv shows data
   function getData(query){
     if(query.length == 0){
-      console.log("없다 임마!!");
       Alert.alert(
         "No keyword",
         "Please enter a TV Show/Movie name",
@@ -100,25 +100,28 @@ export default function Search() {
   }, [])
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
-      <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
-      <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/>
-        { shows.length == 0 ? 
-          <> 
-            <Text style={styles.subHeader}>Recommended</Text>
-            <Animated.View style={{opacity: animation}}>
-              <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-              renderItem={(item)=>( <List shows={item} />)}/> 
+      <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
+        <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/>
+          { shows.length == 0 ? 
+            <> 
+              <Text style={styles.subHeader}>Recommended</Text>
+              <Animated.View style={{opacity: animation}}>
+                <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+                renderItem={(item)=>( <List shows={item} />)}/> 
+              </Animated.View>
+            </> : 
+              <Animated.View style={{opacity: animation}}>
+                <FlatList 
+                  data={shows}
+                  numColumns={3}
+                  columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+                  renderItem={(item)=>( <List shows={item} />)}
+                keyExtractor={item => item.key}/>
             </Animated.View>
-          </> : 
-            <Animated.View style={{opacity: animation}}>
-              <FlatList 
-                data={shows}
-                numColumns={3}
-                columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-                renderItem={(item)=>( <List shows={item} />)}
-              keyExtractor={item => item.key}/>
-          </Animated.View>
-        }
+          }
+      </KeyboardAvoidingView>
+      <StatusBar style="auto" />
     </SafeAreaView>
   )
 }

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, Card, Header, Icon, Image } from 'react-native-elements';
+import { StatusBar } from 'expo-status-bar';
 
 const width =  Dimensions.get('window').width;
 const height =  Dimensions.get('window').height;
@@ -108,6 +109,7 @@ export default function Details({navigation, route}) {
           <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} />
         </View>
       </ScrollView>
+      <StatusBar style="auto" />
     </SafeAreaProvider>
   )
 }
