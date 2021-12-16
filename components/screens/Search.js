@@ -1,11 +1,9 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated } from 'react-native'
 import { Input } from 'react-native-elements';
 import List from '../List';
-import GlobalState from '../utils/globalContext.utils.';
 
 export default function Search() {
-
   //TODO: fix spell checker
   // const {shows, setShows} = useContext(GlobalState);
   const [shows, setShows] = useState([]);
@@ -14,6 +12,14 @@ export default function Search() {
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
+        
+            const animation = useRef(new Animated.Value(0)).current;
+     const fadeIn = Animated.timing(animation, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true,
+    }).start();
+
   function getRecommended(){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
     let url = 'https://api.trakt.tv/shows/recommended';
@@ -91,7 +97,6 @@ export default function Search() {
         setShows([])
       });
     }
-    
   useEffect(() => {
     getRecommended();
   }, [])
@@ -103,15 +108,23 @@ export default function Search() {
         { shows.length == 0 ? 
             <> 
               <Text style={styles.subHeader}>Recommended</Text>
+          <Animated.View style={{
+                opacity: animation
+              }}>
               <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
               renderItem={(item)=>( <List shows={item} />)}/> 
+                 </Animated.View>
             </> : 
+ <Animated.View style={{
+                opacity: animation
+              }}>
           <FlatList 
             data={shows}
             numColumns={3}
             columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
             renderItem={(item)=>( <List shows={item} />)}
           keyExtractor={item => item.key}
+ </Animated.View>
         />
         }
     </SafeAreaView>

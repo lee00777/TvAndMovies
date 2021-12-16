@@ -1,11 +1,21 @@
+
 import { View, Text, SafeAreaView, StyleSheet, FlatList, Platform} from 'react-native'
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';
 import * as StoreReview from 'expo-store-review';
 
 export default function Favorites() {
   const {faveData} = useContext(GlobalContext);
+
+
+    const animation = useRef(new Animated.Value(0)).current;
+
+    const fadeIn = Animated.timing(animation, {
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: true,
+    }).start();
 
   useEffect(() => {
     setTimeout(()=>{
@@ -17,6 +27,9 @@ export default function Favorites() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <Text style={styles.header}>Favorites</Text>
+ <Animated.View style={{
+                opacity: animation
+              }}>
       <FlatList 
         data={faveData}
         numColumns={3}
@@ -25,6 +38,7 @@ export default function Favorites() {
         ListEmptyComponent={<Text style={styles.noFavItemMsg}> No Favorite Item </Text>}
         keyExtractor={item => item.key}
       />
+              </Animated.View>
       
     </SafeAreaView>
   )
