@@ -4,6 +4,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';
 import * as StoreReview from 'expo-store-review';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Favorites() {
   const {faveData, favorites} = useContext(GlobalContext);
@@ -42,7 +43,7 @@ export default function Favorites() {
         keyExtractor={item => item.key}
       />
               </Animated.View>
-      
+              <StatusBar style="auto" />
     </SafeAreaView>
   )
 }
