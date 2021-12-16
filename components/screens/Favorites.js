@@ -16,7 +16,7 @@ export default function Favorites() {
   }).start();
 
   useEffect(() => {
-    if(favorites.length >= 3){
+    if(favorites.length === 3){
       StoreReview.requestReview()
     }
   }, [favorites])
