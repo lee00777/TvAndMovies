@@ -6,7 +6,6 @@ import List from '../List';
 
 export default function Search() {
   //TODO: fix spell checker
-  // const {shows, setShows} = useContext(GlobalState);
   const [shows, setShows] = useState([]);
   const [recommended, setRecommended] = useState([])
   const [loading, setLoading] = useState(true);
@@ -63,37 +62,40 @@ export default function Search() {
           { text: "OK", onPress: () => console.log("OK Pressed") }
         ]
       );
-    }
-    let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
-    let url = `https://api.trakt.tv/search/show?query=${query}`;
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        "trakt-api-key": id,
-        'trakt-api-version': '2'
-      }
-    })
-    .then((resp)=>{
-      if (!resp.ok) throw new Error(resp.statusText);
-        return resp.json();
-    })
-    .then((data) => {
-      let results = data.map((item) => {
-        return {...item.show, key: item.show['ids'].trakt}
+      return; 
+    }else{
+      let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
+      let url = `https://api.trakt.tv/search/show?query=${query}`;
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          "trakt-api-key": id,
+          'trakt-api-version': '2'
+        }
+      })
+      .then((resp)=>{
+        if (!resp.ok) throw new Error(resp.statusText);
+          return resp.json();
+      })
+      .then((data) => {
+        let results = data.map((item) => {
+          return {...item.show, key: item.show['ids'].trakt}
+        });
+        setShows(results);
+        setIsRefreshing(false);
+        setLoading(false);
+        setError("")
+      })
+      .catch((error) => {
+        console.error;
+        setIsRefreshing(false);
+        setLoading(true);
+        setError(err.message);
+        setShows([])
       });
-      setShows(results);
-      setIsRefreshing(false);
-      setLoading(false);
-      setError("")
-    })
-    .catch((error) => {
-      console.error;
-      setIsRefreshing(false);
-      setLoading(true);
-      setError(err.message);
-      setShows([])
-    });
+    }
+
   }
   useEffect(() => {
     getRecommended();
@@ -102,6 +104,8 @@ export default function Search() {
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
+        
+    
         <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/>
           { shows.length == 0 ? 
             <> 

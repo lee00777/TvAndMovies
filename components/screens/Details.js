@@ -32,7 +32,6 @@ export default function Details({navigation, route}) {
   }, []);
 
 
-
   function getDetails(showId){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
     let url = `https://api.trakt.tv/shows/${showId}?extended=full`;
@@ -125,18 +124,17 @@ export default function Details({navigation, route}) {
               </>
               :<> </>
             }
-         {
-           show.trailer &&
-       <View style={styles.trailer}>
-         <Text style={styles.featTitle}>Trailer</Text>
-      <YoutubePlayer
-        height={200}
-        play={playing}
-        videoId={show.trailer.replace('https://youtube.com/watch?v=', '')}
-        onChangeState={onStateChange}
-      />
-    </View>
-         }
+            {
+              show.trailer && <View style={styles.trailer}> 
+                <Text style={styles.featTitle}>Trailer</Text>
+                <YoutubePlayer
+                  height={200}
+                  play={playing}
+                  videoId={show.trailer.replace('https://youtube.com/watch?v=', '')}
+                  onChangeState={onStateChange}
+                />
+              </View>
+            }
         </View>
           <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
           <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} />
