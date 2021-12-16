@@ -31,9 +31,9 @@ export default function App() {
       .then((item) => {
         //get the value from AsyncStorage and save it in `value`
         item = item === null ? [] : JSON.parse(item);
+        console.log(`data coming from storage ${item}`);
         setFaves(item);
         setLoading(false);
-      //  console.log(item);
       })
       .catch(error => console.log(error));
   };
@@ -49,7 +49,7 @@ export default function App() {
   const removeData = (value)=>{
     let newFaves = faves.filter(item => item != value)
       setFaves(newFaves);
-      setItem(JSON.stringify(faves))
+      setItem(JSON.stringify(newFaves))
       .then(()=>{
       })
       .catch((error) => console.log(error))
