@@ -115,17 +115,10 @@ const styles = StyleSheet.create({
   },
   header:{
     fontSize: 20,
-    color:"#fff",
+    color:"#e0b0ff",
     textAlign:'left',
     marginLeft:10,
     paddingTop: 15
-  },
-  subHeader:{
-    fontSize: 15,
-    color:"#fff",
-    textAlign:'left',
-    marginLeft:10,
-    marginTop:10,
   },
   briefInfo:{
     flexWrap:"wrap",

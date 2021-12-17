@@ -72,7 +72,7 @@ export default function List({shows}) {
         onPress={(ev)=>{
           saveFave(shows.item['ids'].trakt);
       }}>
-        <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:30}}/>
+        <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:23}}/>
       </Pressable>
       <Pressable
         onPress={()=>{

@@ -121,9 +121,7 @@ export default function Search({navigation}) {
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
             {clicked && (<Entypo name="cross" size={22} color="black" style={{ padding: 1 }} 
               onPress={() => { setSearch("");
-                // Keyboard.dismiss();
                 setClicked(false);
-                // navigation.navigate('Find');
               }}/>)}
           </View>
         </View>
@@ -190,17 +188,10 @@ const styles = StyleSheet.create({
     backgroundColor:'#202124',
     justifyContent: 'flex-start',
   },
-  header:{
-    fontSize: 20,
-    color:"#fff",
-    textAlign:'left',
-    marginLeft:10,
-    paddingTop: 15
-  },
   subHeader:{
     fontSize: 15,
     marginTop:5,
-    color:"#fff",
+    color:"#e0b0ff",
     textAlign:'left',
     marginLeft:10,
   },

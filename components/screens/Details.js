@@ -122,8 +122,8 @@ export default function Details({navigation, route}) {
               <Text style={styles.listItemHeader}>{show.title}</Text>
               <View style={{marginTop:15}}>
                 <Text style={styles.basicInfoText}>Status: {show.status}</Text>
-                <Text style={styles.basicInfoText}>First Air Date: {new Date(show.first_aired).toLocaleDateString()}</Text>
                 <Text style={styles.basicInfoText}>Network: {show['network'] ? show['network'] : 'Not Available'} / {show.country ? show.country.toUpperCase() : show.country}</Text>
+                <Text style={styles.basicInfoText}>First Air Date: {new Date(show.first_aired).toLocaleDateString()}</Text>
               </View>
             </View>
           </View>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   basicInfoText:{
     marginTop:15,
-    color:"gray",
+    color:"#d9dbda",
     fontSize:13
   },
   listItem:{
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   listItemHeader:{
     fontSize:20,
     marginTop:15,
-    color:"white"
+    color:"#e0b0ff"
   },
   overview:{
     marginHorizontal:10,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   details:{
     fontSize:18,
-    color:"white",
+    color:"#e0b0ff",
     marginTop:15
   },
   episode:{
@@ -250,7 +250,8 @@ const styles = StyleSheet.create({
   },
   text:{
     marginTop:10,
-    color:"gray"
+    color:"#d9dbda",
+    fontSize:13
   },
   trailer:{
     marginHorizontal:10,
