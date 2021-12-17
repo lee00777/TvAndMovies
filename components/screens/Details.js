@@ -14,7 +14,7 @@ export default function Details({navigation, route}) {
   const [img, setImg] = useState('');
   const [show, setShow] = useState([]);
   const [nextEpisode, setNextEpisode] = useState([]);
-  let imgURL = `https://image.tmdb.org/t/p/w500/${img}`;
+  let imgURL = `https://${img}`;
 
 
   //youtube player state variables
@@ -49,8 +49,12 @@ export default function Details({navigation, route}) {
     })
     .then((data) => {
         setShow(data);
-        getImage(data['ids'].tmdb);
         getNextEpisode(data['ids'].trakt);
+        if (data['ids'].tmdb){
+          getImage(data['ids'].tmdb);
+        } else {
+          setImg('via.placeholder.com/500x500?text=No+Image');
+        }
     })
     .catch((error) => {
         console.log(error)
@@ -92,7 +96,7 @@ export default function Details({navigation, route}) {
           return resp.json();
       })
       .then((data) => {
-        return setImg(data.poster_path)
+        return data.poster_path = null ? setImg('via.placeholder.com/500') : setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
       })
       .catch(console.error);
     };
