@@ -98,7 +98,7 @@ export default function Details({navigation, route}) {
         if(!data.poster_path || data.poster_path == null) {
           return setImg('via.placeholder.com/500x500?text=No+Image');
         } else{
-         setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+          setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
         }
       })
       .catch(console.error);
@@ -108,7 +108,20 @@ export default function Details({navigation, route}) {
     <SafeAreaProvider style={styles.safeArea}>
       <ScrollView>
         <View style={styles.card}>
-          <Text style={styles.title}>{show.title}</Text>
+          {/* <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
+            <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} /> */}
+          <View style={styles.container}>
+         
+            <Icon name='arrowleft' style={styles.backIcon} onPress={()=> navigation.goBack()}  type='antdesign' size={25} color='white' />
+          
+   
+            <Text style={styles.title}>{show.title}</Text>
+          </View>
+
+            {/* test */}
+
+
+          {/* <Text style={styles.title}>{show.title}</Text> */}
           <Image title={show.title} PlaceholderContent={<ActivityIndicator size="large" color="#00ff00" />} style={styles.image} source={{uri: imgURL}} />
           {/* <Text style={styles.title} >Overview</Text> */}
           <Text style={styles.text} >{show.overview}</Text>
@@ -143,8 +156,8 @@ export default function Details({navigation, route}) {
               </View>
             }
         </View>
-          <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
-          <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} />
+          {/* <Button title="Back" titleStyle={{fontWeight: 'bold'}} onPress={()=> navigation.goBack()} icon={
+          <Icon name='arrowleft' type='antdesign' size={25} color='white'/>} /> */}
         </View>
       </ScrollView>
       <StatusBar style="auto" />
@@ -153,6 +166,25 @@ export default function Details({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    flex:1,
+    marginTop:10
+  },
+  backIcon:{
+    textAlign:"left"
+  },
+  title: {
+    flex:3,
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'center',
+    justifyContent:'center',
+    textAlign: 'center',
+  },
   safeArea:{
     flex: 1,  
     resizeMode: 'center', 
@@ -173,13 +205,7 @@ const styles = StyleSheet.create({
   nextEp: {
     marginVertical: 5,
   },
-  title: {
-    margin: 10,
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center'
-  },
+
   featTitle: {
     paddingVertical: 10,
     color: 'white',

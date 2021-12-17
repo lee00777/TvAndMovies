@@ -107,7 +107,6 @@ export default function Search({navigation}) {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"} style={{flex: 1, flexGrow: 1}}>
-        <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
         <View style={styles.container}>
           <View style={ styles.searchBar}>
             { clicked ? <Ionicons name="arrow-back-sharp" size={22} color="black" style={{ marginLeft: 1 }} onPress={()=>{
@@ -123,9 +122,9 @@ export default function Search({navigation}) {
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
             {clicked && (<Entypo name="cross" size={22} color="black" style={{ padding: 1 }} 
               onPress={() => { setSearch("");
-              Keyboard.dismiss();
-               setClicked(false);
-               navigation.navigate('Find');
+                Keyboard.dismiss();
+                setClicked(false);
+                navigation.navigate('Find');
               }}/>)}
           </View>
         </View>
@@ -141,12 +140,12 @@ export default function Search({navigation}) {
                   colors={["ghostwhite", "#fff"]}
                   tintColor={"ghostwhite"}
                   refreshing={isRefreshing}
-                onRefresh={()=>{
-                  setIsRefreshing(true);
-                  setShows([]);
-                  setSearch('');
-                  setClicked(false);
-                  getRecommended();
+                  onRefresh={()=>{
+                    setIsRefreshing(true);
+                    setShows([]);
+                    setSearch('');
+                    setClicked(false);
+                    getRecommended();
                 }}
                   />
                 }
@@ -234,6 +233,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     padding: 10,
+    marginTop:20,
     flexDirection: "row",
     width: "97%",
     backgroundColor: "#d9dbda",
