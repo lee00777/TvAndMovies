@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Animated, Text, FlatList, StyleSheet, Dimensions, Platform, RefreshControl} from 'react-native'
+import { View, Animated, Text, FlatList, StyleSheet, Platform, RefreshControl} from 'react-native'
 import List from '../List';
 import * as Font from "expo-font";
 import Apploading from "expo-app-loading";
 import GlobalState from '../utils/globalContext.utils.';
 import { StatusBar } from 'expo-status-bar';
-
-// const width =  Dimensions.get('window').width;
 
 async function getFont(){
   await Font.loadAsync({

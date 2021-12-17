@@ -6,7 +6,6 @@ import { StatusBar } from 'expo-status-bar';
 import YoutubePlayer from "react-native-youtube-iframe";
 
 const width =  Dimensions.get('window').width;
-// const height =  Dimensions.get('window').height;
 
 export default function Details({navigation, route}) {
   let {id} = route.params;
@@ -228,6 +227,7 @@ const styles = StyleSheet.create({
   },
   listItemHeader:{
     fontSize:20,
+    marginTop:15,
     color:"white"
   },
   overview:{

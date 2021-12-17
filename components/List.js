@@ -48,13 +48,11 @@ export default function List({shows}) {
   
   function addFaveData(){
     setFaveData((old)=> [shows.item, ...old])
-    console.log(`added ${shows.item.title}`);
   }
   
   function removeFaveData(id){
     let newData = faveData.filter(item => item['ids'].trakt != id);
     setFaveData(newData);
-    console.log(`removed ${shows.item.title}`);
   }
 
   let imgURL = `https://${img}`;
@@ -79,7 +77,6 @@ export default function List({shows}) {
       <Pressable
         onPress={()=>{
           navigation.navigate('Details', {id: shows.item['ids'].trakt})
-          console.log(`you pressed ${shows.item['ids'].tmdb}`)
       }}>
         <Image PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
       </Pressable>

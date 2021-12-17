@@ -13,23 +13,17 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
-
 export default function App() {
-
-  const componentMounted = useRef(false)
   const [loading, setLoading] = useState(true);
   const [shows, setShows] = useState([]);
   const [faves, setFaves] = useState([]);
   const [faveData, setFaveData] = useState([]);
   const { getItem, setItem } = useAsyncStorage('FavrtShow');
 
-  //handle storage functions
   const getStorageData = () => {
     getItem()
       .then((item) => {
-        //get the value from AsyncStorage and save it in `value`
         item = item === null ? [] : JSON.parse(item);
-        console.log(`data coming from storage ${item}`);
         setFaves(item);
         setLoading(false);
       })
@@ -37,9 +31,7 @@ export default function App() {
   };
 
   const addStorageData = (newValue) => {
-    //item in variable is an array
     setFaves((currentArr) => [newValue, ...currentArr]);
-    //add the newValue to the array and overwrite it in AsyncStorage
     setItem(JSON.stringify([newValue, ...faves]))
       .catch(error => console.log(error));
   };
@@ -53,11 +45,9 @@ export default function App() {
       .catch((error) => console.log(error))
   }
 
-  //get FaveData
   function fetchFaveData(showId){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
     let url = `https://api.trakt.tv/shows/${showId}?extended`;
-
     fetch(url, {
       method: 'GET',
       headers: {
@@ -77,13 +67,12 @@ export default function App() {
     })
     .catch((error) => {
       console.log(error);
-
     });
     }
-    const getFaveData = ()=>{
-      faves.forEach(item => fetchFaveData(item))
+  const getFaveData = ()=>{
+    faves.forEach(item => fetchFaveData(item))
   };
-  //add functions and data to userContext
+
   const globalData = {
     setFaveData,
     setShows,
@@ -101,6 +90,7 @@ useEffect(() => {
     getFaveData();
   }
 }, [loading])
+
   return (
     <GlobalContext.Provider value={globalData}>
       <SafeAreaProvider>

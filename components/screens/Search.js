@@ -84,7 +84,6 @@ export default function Search({navigation}) {
         let results = data.map((item) => {
           return {...item.show, key: item.show['ids'].trakt}
         });
-        // console.log(results);
         setShows(results);
         setIsRefreshing(false);
         setLoading(false);
