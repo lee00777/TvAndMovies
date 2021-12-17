@@ -42,6 +42,7 @@ export default function Favorites() {
 const styles = StyleSheet.create({
   safeArea:{
     flex: 1,  
+    flexGrow: 1,
     resizeMode: 'center', 
     backgroundColor:'#202124',
     justifyContent: 'flex-start',

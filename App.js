@@ -107,7 +107,7 @@ useEffect(() => {
           <NavigationContainer>
             <Tab.Navigator initialRouteName='Home'>
               <Tab.Screen name="Home" component={Trending} options={{
-                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />)}} />
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />)}}/>
               <Tab.Screen name="Find" component={Search}  options={{
                 tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={color} />)}}/>
               <Tab.Screen name="Favorites" component={Favorites}  options={{

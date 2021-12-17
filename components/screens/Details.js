@@ -1,6 +1,5 @@
-import { ScrollView } from 'native-base';
 import React, {useEffect, useState, useCallback} from 'react'
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
+import { ScrollView, View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button, Card, Header, Icon, Image } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
