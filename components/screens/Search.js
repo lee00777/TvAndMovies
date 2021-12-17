@@ -122,9 +122,9 @@ export default function Search({navigation}) {
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
             {clicked && (<Entypo name="cross" size={22} color="black" style={{ padding: 1 }} 
               onPress={() => { setSearch("");
-                Keyboard.dismiss();
+                // Keyboard.dismiss();
                 setClicked(false);
-                navigation.navigate('Find');
+                // navigation.navigate('Find');
               }}/>)}
           </View>
         </View>
