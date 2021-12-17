@@ -2,20 +2,10 @@ import React, {useState, useEffect,useRef, useContext} from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, Button} from 'react-native'
 import { Input, Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
-// search bar
 import { Feather, Entypo,Ionicons } from "@expo/vector-icons";
 import List from '../List';
-// import { HeaderBackButton } from '@react-navigation/elements';
-import { HeaderBackButton } from '@react-navigation/stack';
-
-const navigationOptions = (navigation => {
-  return{
-    headerLeft:(<HeaderBackButton onPress={()=>{navigation.navigate('Favorites')}}/>)
- }
-})
 
 export default function Search({navigation}) {
-  //TODO: fix spell checker
   const [shows, setShows] = useState([]);
   const [recommended, setRecommended] = useState([])
   const [loading, setLoading] = useState(true);
@@ -23,14 +13,7 @@ export default function Search({navigation}) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const animation = useRef(new Animated.Value(0)).current;
-
   const [clicked, setClicked] = useState(false);
-
-  // const navigationOptions = (navigation => {
-  //   return{
-  //     headerLeft:(<HeaderBackButton onPress={()=>{navigation.navigate('Favorites')}}/>)
-  //  }
-  // })
 
   const fadeIn = Animated.timing(animation, {
     toValue: 1,
@@ -125,10 +108,8 @@ export default function Search({navigation}) {
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
-        {/* <Input style={styles.input} placeholder="Enter a TV Show name" onChangeText={(value)=> setSearch(value) } onSubmitEditing={()=> getData(search)}/> */}
         <View style={styles.container}>
-          <View style={ !clicked ? styles.searchBar__unclicked : styles.searchBar__clicked}>
-            {/* search Icon */}
+          <View style={ styles.searchBar}>
             { clicked ? <Ionicons name="arrow-back-sharp" size={20} color="black" style={{ marginLeft: 1 }} onPress={()=>{
                 Keyboard.dismiss();
                 setClicked(false);
@@ -137,31 +118,13 @@ export default function Search({navigation}) {
                 navigation.navigate('Find');
             }} /> 
               : <Feather name="search" size={20} color="black" style={{ marginLeft: 1 }}/>}
-            {/* Input field */}
-            <TextInput style={styles.input} placeholder="Search" value={search}
-          
-            onChangeText={(value)=> {setSearch(value)} }
+            <TextInput style={styles.input} autoCorrect={false} placeholder="Search" value={search} onChangeText={(value)=> {setClicked(true);
+              setSearch(value)} }
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
-            {/* cross Icon, depending on whether the search bar is clicked or not */}
             {clicked && (<Entypo name="cross" size={26} color="black" style={{ padding: 1 }} 
-              onPress={() => { setSearch(""); 
-              Keyboard.dismiss();
-              setClicked(false);
-              navigation.navigate('Find');}}/>)}
+              onPress={() => { setSearch("")}}/>)}
           </View>
-          {/* {clicked && (
-            <View>
-              <Button
-                title="Cancel"
-                onPress={() => {
-                  Keyboard.dismiss();
-                  setClicked(false);
-                }}
-              ></Button>
-            </View>
-          )} */}
         </View>
-
           { shows.length == 0 ? 
             <> 
               <Text style={styles.subHeader}>Recommended</Text>
@@ -205,21 +168,11 @@ const styles = StyleSheet.create({
     textAlign:'left',
     marginLeft:10,
   },
-  briefInfo:{
-    flexWrap:"wrap",
-    flexDirection:"row",
-  },
   loading:{
     color:"#000",
     textAlign:"center",
     fontSize:18,
     marginTop:50
-  },
-  input:{
-    flex: 1,
-    color: 'white',
-    marginLeft:5,
-    fontSize:15
   },
   fadingContainer: {
     padding: 20,
@@ -235,33 +188,25 @@ const styles = StyleSheet.create({
     marginLeft:10
   },
   container: {
-    margin: 15,
+    margin: 12,
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    width: "90%",
-
+    width: "97%",
   },
-  searchBar__unclicked: {
+  searchBar: {
     padding: 10,
     flexDirection: "row",
-    width: "95%",
+    width: "97%",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",
-  },
-  searchBar__clicked: {
-    padding: 10,
-    flexDirection: "row",
-    width: "80%",
-    backgroundColor: "#d9dbda",
-    borderRadius: 15,
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-evenly"
   },
   input: {
-    fontSize: 20,
-    marginLeft: 10,
+    flex: 1,
     width: "90%",
+    marginLeft:5,
+    fontSize:15
   },
 })
