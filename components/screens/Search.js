@@ -131,18 +131,23 @@ export default function Search({navigation}) {
             { clicked ? <Ionicons name="arrow-back-sharp" size={20} color="black" style={{ marginLeft: 1 }} onPress={()=>{
                 Keyboard.dismiss();
                 setClicked(false);
-                // navigation.goBack()
-                navigationOptions()
+                setSearch('');
+                setShows([]);
+                navigation.navigate('Find');
             }} /> 
               : <Feather name="search" size={20} color="black" style={{ marginLeft: 1 }}/>}
             {/* Input field */}
-            <TextInput style={styles.input} placeholder="Search" value={search} onChangeText={(value)=> setSearch(value) }
+            <TextInput style={styles.input} placeholder="Search" value={search} onChangeText={(value)=> {setClicked(true);
+            setSearch(value)} }
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
             {/* cross Icon, depending on whether the search bar is clicked or not */}
             {clicked && (<Entypo name="cross" size={26} color="black" style={{ padding: 1 }} 
-              onPress={() => { setSearch("")}}/>)}
+              onPress={() => { setSearch(""); 
+              Keyboard.dismiss();
+              setClicked(false);
+              navigation.navigate('Find');}}/>)}
           </View>
-          {clicked && (
+          {/* {clicked && (
             <View>
               <Button
                 title="Cancel"
@@ -152,7 +157,7 @@ export default function Search({navigation}) {
                 }}
               ></Button>
             </View>
-          )}
+          )} */}
         </View>
 
           { shows.length == 0 ? 
