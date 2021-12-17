@@ -1,12 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react'
-import { View, Text, FlatList, StatusBar, StyleSheet, Dimensions, Pressable, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Pressable, ActivityIndicator } from 'react-native'
 import { Icon, Image } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
 import GlobalContext from './utils/globalContext.utils.'
 
-
 const width =  Dimensions.get('window').width;
-//TODO: placeholder image for images not found
 export default function List({shows}) {
   const navigation = useNavigation();
   const {favorites, removeData, addStorageData, faveData, setFaveData} = useContext(GlobalContext);

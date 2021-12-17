@@ -2,13 +2,12 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Animated, Text, FlatList, StyleSheet, Dimensions, Platform, RefreshControl} from 'react-native'
 import List from '../List';
-//  app-loading & font
 import * as Font from "expo-font";
 import Apploading from "expo-app-loading";
 import GlobalState from '../utils/globalContext.utils.';
 import { StatusBar } from 'expo-status-bar';
 
-const width =  Dimensions.get('window').width;
+// const width =  Dimensions.get('window').width;
 
 async function getFont(){
   await Font.loadAsync({
@@ -24,7 +23,6 @@ export default function Trending() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
-  //animation config
   const animation = useRef(new Animated.Value(0)).current;
   const fadeIn = Animated.timing(animation, {
     toValue: 1,
@@ -32,7 +30,6 @@ export default function Trending() {
     useNativeDriver: true,
   }).start();
 
-  //tv shows data
   function getShows(){
     let id = 'e9340061974538238c2dc83f40be9ca2201a2f3cc2e0c1f916e1f75c36416300';
     let url = 'https://api.trakt.tv/shows/trending';

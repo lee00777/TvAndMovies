@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     padding: 10,
-    marginTop:20,
+    marginTop:15,
     flexDirection: "row",
     width: "97%",
     backgroundColor: "#d9dbda",

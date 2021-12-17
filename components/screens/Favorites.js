@@ -2,9 +2,9 @@
 import {Text, SafeAreaView, StyleSheet, FlatList, Platform, Animated} from 'react-native'
 import React, {useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
-import List from '../List';
 import * as StoreReview from 'expo-store-review';
 import { StatusBar } from 'expo-status-bar';
+import List from '../List';
 
 export default function Favorites() {
   const {faveData, favorites} = useContext(GlobalContext);
@@ -26,6 +26,7 @@ export default function Favorites() {
       <Animated.View style={{opacity: animation, flex: 1, flexGrow: 1}}>
         <FlatList 
           data={faveData}
+          style={{marginTop:20}}
           numColumns={3}
           columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
           renderItem={(item)=>( <List shows={item} />)}
