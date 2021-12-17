@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NativeBaseProvider, Box, Container, VStack } from 'native-base';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
@@ -106,7 +104,6 @@ useEffect(() => {
   return (
     <GlobalContext.Provider value={globalData}>
       <SafeAreaProvider>
-        <NativeBaseProvider>
           <NavigationContainer>
             <Tab.Navigator initialRouteName='Home'>
               <Tab.Screen name="Home" component={Trending} options={{
@@ -119,16 +116,7 @@ useEffect(() => {
               tabBarVisible: false}} />
             </Tab.Navigator>
           </NavigationContainer>
-        </NativeBaseProvider>
       </SafeAreaProvider>
     </GlobalContext.Provider>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});

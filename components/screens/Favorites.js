@@ -1,6 +1,6 @@
 
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Platform, Animated} from 'react-native'
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import {Text, SafeAreaView, StyleSheet, FlatList, Platform, Animated} from 'react-native'
+import React, {useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import List from '../List';
 import * as StoreReview from 'expo-store-review';

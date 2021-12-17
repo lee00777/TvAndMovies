@@ -74,7 +74,7 @@ export default function Trending() {
     return (
       <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} >Trending Shows</Text>
-        <Animated.View style={{opacity: animation}}>
+        <Animated.View style={{opacity: animation, flex: 1, flexGrow: 1}}>
           <FlatList 
             data={shows}
             numColumns={3}

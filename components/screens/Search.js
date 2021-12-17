@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, Button} from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, ScrollView} from 'react-native'
 import { Input, Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Entypo,Ionicons } from "@expo/vector-icons";
@@ -106,7 +106,7 @@ export default function Search({navigation}) {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
-      <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <KeyboardAvoidingView enabled behavior={Platform.OS === "ios" ? "padding" : "height"} style={{flex: 1, flexGrow: 1}}>
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
         <View style={styles.container}>
           <View style={ styles.searchBar}>
@@ -130,20 +130,23 @@ export default function Search({navigation}) {
           </View>
         </View>
           { shows.length == 0 ? 
-            <> 
+          <View style={{flex: 1}}>
               <Text style={styles.subHeader}>Recommended</Text>
               <Animated.View style={{opacity: animation}}>
-                <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
-                renderItem={(item)=>( <List shows={item} />)}/> 
+                <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, flexGrow: 1, justifyContent:"space-around"}}
+                renderItem={(item)=>( <List shows={item} />)}
+                ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}/> 
               </Animated.View>
-            </> : 
+              </View>: 
               <Animated.View style={{opacity: animation}}>
                 <FlatList 
                   data={shows}
                   numColumns={3}
-                  columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
+                  columnWrapperStyle={{flex:1, flexGrow: 1,justifyContent:"space-around", marginBottom: 30}}
                   renderItem={(item)=>( <List shows={item} />)}
-                keyExtractor={item => item.key}/>
+                keyExtractor={item => item.key}
+                ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}
+                />
             </Animated.View>
           }
       </KeyboardAvoidingView>
@@ -155,6 +158,7 @@ export default function Search({navigation}) {
 const styles = StyleSheet.create({
   safeArea:{
     flex: 1,  
+    flexGrow: 1,
     resizeMode: 'center', 
     backgroundColor:'#202124',
     justifyContent: 'flex-start',
