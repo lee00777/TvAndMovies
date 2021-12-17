@@ -1,5 +1,5 @@
 import React, {useState, useEffect,useRef, useContext} from 'react'
-import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard} from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, RefreshControl} from 'react-native'
 import { Input, Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Entypo,Ionicons } from "@expo/vector-icons";
@@ -135,7 +135,22 @@ export default function Search({navigation}) {
               <Animated.View style={{opacity: animation}}>
                 <FlatList data={recommended} numColumns={3} columnWrapperStyle={{flex:1, flexGrow: 1, justifyContent:"space-around"}}
                 renderItem={(item)=>( <List shows={item} />)}
-                ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}/> 
+                ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}
+                refreshControl={
+                  <RefreshControl
+                  colors={["ghostwhite", "#fff"]}
+                  tintColor={"ghostwhite"}
+                  refreshing={isRefreshing}
+                onRefresh={()=>{
+                  setIsRefreshing(true);
+                  setShows([]);
+                  setSearch('');
+                  setClicked(false);
+                  getRecommended();
+                }}
+                  />
+                }
+                /> 
               </Animated.View>
               </View>: 
               <Animated.View style={{opacity: animation}}>
@@ -144,6 +159,20 @@ export default function Search({navigation}) {
                   numColumns={3}
                   columnWrapperStyle={{flex:1, flexGrow: 1,justifyContent:"space-around", marginBottom: 30}}
                   renderItem={(item)=>( <List shows={item} />)}
+                  refreshControl={
+                    <RefreshControl
+                    colors={["ghostwhite", "#fff"]}
+                    tintColor={"ghostwhite"}
+                    refreshing={isRefreshing}
+                    onRefresh={()=>{
+                      setIsRefreshing(true);
+                      setShows([]);
+                      setSearch('');
+                      setClicked(false);
+                      getRecommended();
+                    }}
+                    />
+                  }
                 keyExtractor={item => item.key}
                 ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}
                 />

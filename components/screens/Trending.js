@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Animated, Text, FlatList, StyleSheet, Dimensions, Platform} from 'react-native'
+import { View, Animated, Text, FlatList, StyleSheet, Dimensions, Platform, RefreshControl} from 'react-native'
 import List from '../List';
 //  app-loading & font
 import * as Font from "expo-font";
@@ -80,14 +80,19 @@ export default function Trending() {
             numColumns={3}
             columnWrapperStyle={{flex:1, justifyContent:"space-around"}}
             renderItem={(item)=>( <List shows={item} />)}
-            refreshing={isRefreshing}
-            onRefresh={()=>{
-              setIsRefreshing(true);
-              getShows();
-            }}
+            refreshControl={<RefreshControl
+              colors={["black", "ghostwhite"]}
+              tintColor={"ghostwhite"}
+              refreshing={isRefreshing}
+              progressBackgroundColor={'#fff'}
+              onRefresh={()=>{
+                setIsRefreshing(true);
+                getShows();
+              }}/>}
             onscrollEventThrottle={1}
             ListEmptyComponent={<Text> Loading ...</Text>}
             keyExtractor={item => item.key}
+            ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}
           />
         </Animated.View>
         <StatusBar style="auto" />
