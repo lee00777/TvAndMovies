@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Favrt TV Show",
+    "name": "CheesePop TVShow",
     "slug": "react-native-final",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.deje0014.reactnativefinal"
     },
     "web": {
       "favicon": "./assets/favicon.png"
