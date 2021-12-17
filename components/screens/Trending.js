@@ -18,8 +18,6 @@ async function getFont(){
 export default function Trending() {
   const {shows, setShows} = useContext(GlobalState);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const animation = useRef(new Animated.Value(0)).current;
   const fadeIn = Animated.timing(animation, {
@@ -49,14 +47,10 @@ export default function Trending() {
       });
       setShows(results);
       setIsRefreshing(false);
-      setLoading(false);
-      setError("")
     })
     .catch((error) => {
       console.error;
       setIsRefreshing(false);
-      setLoading(true);
-      setError(err.message);
       setShows([])
     });
   }

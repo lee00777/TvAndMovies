@@ -7,8 +7,6 @@ import List from '../List';
 export default function Search({navigation}) {
   const [shows, setShows] = useState([]);
   const [recommended, setRecommended] = useState([])
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
   const animation = useRef(new Animated.Value(0)).current;
@@ -41,19 +39,14 @@ export default function Search({navigation}) {
       });
       setRecommended(results);
       setIsRefreshing(false);
-      setLoading(false);
-      setError("")
     })
     .catch((error) => {
       console.error;
       setIsRefreshing(false);
-      setLoading(true);
-      setError(err.message);
       setRecommended([])
     });
   }
 
-  //tv shows data
   function getData(query){
     if(query.length == 0){
       Alert.alert(
@@ -85,14 +78,10 @@ export default function Search({navigation}) {
         });
         setShows(results);
         setIsRefreshing(false);
-        setLoading(false);
-        setError("")
       })
       .catch((error) => {
         console.error;
         setIsRefreshing(false);
-        setLoading(true);
-        setError(err.message);
         setShows([])
       });
     }

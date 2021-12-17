@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import { ScrollView, View, Text, StyleSheet, Dimensions, ActivityIndicator, Button} from 'react-native'
+import { ScrollView, View, Text, StyleSheet, ActivityIndicator, Button} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Icon, Image } from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -260,8 +260,6 @@ const styles = StyleSheet.create({
     marginHorizontal:10,
   },
   backIcon:{
-    // backgroundColor: '#00aeef',
-    // borderColor: 'red',
     color:'pink',
     borderWidth: 5,
     borderRadius: 15       
