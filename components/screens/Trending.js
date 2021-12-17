@@ -85,7 +85,7 @@ export default function Trending() {
                 getShows();
               }}/>}
             onscrollEventThrottle={1}
-            ListEmptyComponent={<Text> Loading ...</Text>}
+            ListEmptyComponent={<Text style={styles.loadingMsg}> Loading ...</Text>}
             keyExtractor={item => item.key}
             ListFooterComponent={<View style={{height: 30, marginBottom: 50}}/>}
           />
@@ -130,4 +130,10 @@ const styles = StyleSheet.create({
     fontSize:18,
     marginTop:50
   },
+  loadingMsg:{
+    color:"#fff", 
+    textAlign:"center", 
+    fontSize:23, 
+    marginTop:40
+  }
 })

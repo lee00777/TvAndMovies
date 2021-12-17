@@ -10,8 +10,10 @@ import Favorites from './components/screens/Favorites';
 import Search from './components/screens/Search';
 import GlobalContext from './components/utils/globalContext.utils.';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
 
 const Tab = createBottomTabNavigator();
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const [loading, setLoading] = useState(true);

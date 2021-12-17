@@ -14,10 +14,11 @@ export default function Favorites() {
     duration: 700,
     useNativeDriver: true,
   }).start();
+  
 
   useEffect(() => {
-    if(favorites.length === 3){
-      StoreReview.requestReview()
+    if(favorites.length == 3){
+      StoreReview.requestReview();
     }
   }, [favorites])
 

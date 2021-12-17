@@ -1,11 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import { ScrollView, View, Text, StyleSheet, Dimensions, ActivityIndicator} from 'react-native'
+import { ScrollView, View, Text, StyleSheet, Dimensions, ActivityIndicator, Button} from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon, Image } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import YoutubePlayer from "react-native-youtube-iframe";
-
-const width =  Dimensions.get('window').width;
 
 export default function Details({navigation, route}) {
   let {id} = route.params;
@@ -105,7 +103,7 @@ export default function Details({navigation, route}) {
       <ScrollView>
         <View style={styles.card}>
           <View style={styles.container}>
-            <Icon name='arrowleft' style={styles.backIcon} onPress={()=> navigation.goBack()}  type='antdesign' size={25} color='white' />
+              <Button title="< Back" color="#e0b0ff" style={{color:"#e0b0ff"}}  onPress={()=> navigation.goBack()} />
           </View>
           <View style={styles.listItem}>
               {
@@ -127,42 +125,45 @@ export default function Details({navigation, route}) {
               </View>
             </View>
           </View>
-          <View style={styles.overview}>
-            <Text style={styles.details}>Details</Text>
-            <Text style={styles.text} >{show.overview}</Text>
-          </View>
-          <View style={styles.episode}>
-            <Text style={styles.details}>Episode</Text>
-            <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
-            {
-              show.airs &&
-            <Text style={styles.basicInfoText}>Airs: {show.airs.day} @ {show.airs.time} ({show.airs['timezone'].replace('_', ' ')})</Text>
-            }
-            { nextEpisode ? <>
-              <View>
-                <Text style={styles.details}>Next Episode</Text>
-                <Text style={styles.text}>Title: {nextEpisode.title ? nextEpisode.title : "Not Available"} </Text>
-                <Text style={styles.text}>Date: {nextEpisode.first_aired ? new Date(nextEpisode.first_aired).toLocaleDateString() : "Not Available"}</Text>
-              </View>
-              </>
-              :<> </>
-            }
-          </View>
-          <View>
-            {
-              show.trailer && <View style={styles.trailer}> 
-                <Text style={styles.details}>Trailer</Text>
-                <View style={styles.video}>
-                  <YoutubePlayer
-                    height={200}
-                    play={playing}
-                    videoId={show.trailer.replace('https://youtube.com/watch?v=', '')}
-                    onChangeState={onStateChange}
-                  />
+          <View style={{marginHorizontal:20}}>
+            <View style={styles.overview}>
+              <Text style={styles.details}>Details</Text>
+              <Text style={styles.text} >{show.overview}</Text>
+            </View>
+            <View style={styles.episode}>
+              <Text style={styles.details}>Episode</Text>
+              <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
+              {
+                show.airs &&
+              <Text style={styles.basicInfoText}>Airs: {show.airs.day} @ {show.airs.time} ({show.airs['timezone'].replace('_', ' ')})</Text>
+              }
+              { nextEpisode ? <>
+                <View>
+                  <Text style={styles.details}>Next Episode</Text>
+                  <Text style={styles.text}>Title: {nextEpisode.title ? nextEpisode.title : "Not Available"} </Text>
+                  <Text style={styles.text}>Date: {nextEpisode.first_aired ? new Date(nextEpisode.first_aired).toLocaleDateString() : "Not Available"}</Text>
                 </View>
-              </View>
-            }
+                </>
+                :<> </>
+              }
+            </View>
+            <View>
+              {
+                show.trailer && <View style={styles.trailer}> 
+                  <Text style={styles.details}>Trailer</Text>
+                  <View style={styles.video}>
+                    <YoutubePlayer
+                      height={200}
+                      play={playing}
+                      videoId={show.trailer.replace('https://youtube.com/watch?v=', '')}
+                      onChangeState={onStateChange}
+                    />
+                  </View>
+                </View>
+              }
+            </View>
           </View>
+          
         </View>
       </ScrollView>
       <StatusBar style="auto" />
@@ -181,7 +182,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex:1,
     marginTop:20,
-    paddingLeft:10
+    paddingLeft:10,
+    borderRadius:10,
+    overflow: 'hidden'  
   },
   title: {
     flex:3,
@@ -255,6 +258,13 @@ const styles = StyleSheet.create({
   },
   trailer:{
     marginHorizontal:10,
+  },
+  backIcon:{
+    // backgroundColor: '#00aeef',
+    // borderColor: 'red',
+    color:'pink',
+    borderWidth: 5,
+    borderRadius: 15       
   },
   video:{
     marginVertical:10,
