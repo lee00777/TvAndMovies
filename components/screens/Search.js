@@ -110,18 +110,18 @@ export default function Search({navigation}) {
         <Text style={[styles.header,{fontFamily:  Platform.OS === 'ios'? "sansProRegular" : "roboto"}]} > Find a TV Show</Text>
         <View style={styles.container}>
           <View style={ styles.searchBar}>
-            { clicked ? <Ionicons name="arrow-back-sharp" size={20} color="black" style={{ marginLeft: 1 }} onPress={()=>{
+            { clicked ? <Ionicons name="arrow-back-sharp" size={22} color="black" style={{ marginLeft: 1 }} onPress={()=>{
                 Keyboard.dismiss();
                 setClicked(false);
                 setSearch('');
                 setShows([]);
                 navigation.navigate('Find');
             }} /> 
-              : <Feather name="search" size={20} color="black" style={{ marginLeft: 1 }}/>}
+              : <Feather name="search" size={22} color="black" style={{ marginLeft: 1 }}/>}
             <TextInput style={styles.input} autoCorrect={false} placeholder="Search" value={search} onChangeText={(value)=> {setClicked(true);
               setSearch(value)} }
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
-            {clicked && (<Entypo name="cross" size={26} color="black" style={{ padding: 1 }} 
+            {clicked && (<Entypo name="cross" size={22} color="black" style={{ padding: 1 }} 
               onPress={() => { setSearch("")}}/>)}
           </View>
         </View>
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   },
   subHeader:{
     fontSize: 15,
+    marginTop:5,
     color:"#fff",
     textAlign:'left',
     marginLeft:10,

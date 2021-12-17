@@ -32,7 +32,7 @@ export default function List({shows}) {
         if(!data.poster_path || data.poster_path == null) {
           return setImg('via.placeholder.com/500');
         } else{
-         setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+          setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
         }
       })
       .catch(error => console.error);
@@ -75,7 +75,6 @@ export default function List({shows}) {
         style={styles.likeBtn}
         onPress={(ev)=>{
           saveFave(shows.item['ids'].trakt);
-          // getFaveData()
       }}>
         <Icon name={ checkFavorite(shows.item['ids'].trakt) ? 'heart' : 'hearto'} type='antdesign' color={checkFavorite(shows.item['ids'].trakt) ? 'red' : 'pink'} iconProps={{size:30}}/>
       </Pressable>
@@ -86,8 +85,10 @@ export default function List({shows}) {
       }}>
         <Image PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
       </Pressable>
-      <Text style={styles.title}> {shows.item['title']}</Text> 
-      <Text style={styles.released_year}> {shows.item['year']}</Text>
+      <View style={styles.info}>
+        <Text style={styles.title}>{shows.item['title']}</Text> 
+        <Text style={styles.released_year}>{shows.item['year']}</Text>
+      </View>
     </View>
   )
 }
@@ -104,9 +105,13 @@ const styles = StyleSheet.create({
     borderRadius:7,
     marginTop:20
   },
+  info:{
+    textAlign:"left"
+  },
   title:{
     fontSize:13,
-    color:"#fff"
+    color:"#fff",
+    marginTop:5,
   },
   likeBtn:{
     position:"absolute",
@@ -116,6 +121,7 @@ const styles = StyleSheet.create({
   },
   released_year:{
     fontSize:11,
-    color:"gray"
+    color:"gray",
+    marginTop:2
   },
 })
