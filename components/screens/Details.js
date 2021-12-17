@@ -97,7 +97,7 @@ export default function Details({navigation, route}) {
       })
       .then((data) => {
         if(!data.poster_path || data.poster_path == null) {
-          return setImg('via.placeholder.com/500');
+          return setImg('via.placeholder.com/500x500?text=No+Image');
         } else{
          setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
         }
