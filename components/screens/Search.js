@@ -101,6 +101,7 @@ export default function Search({navigation}) {
         let results = data.map((item) => {
           return {...item.show, key: item.show['ids'].trakt}
         });
+        // console.log(results);
         setShows(results);
         setIsRefreshing(false);
         setLoading(false);
@@ -137,8 +138,9 @@ export default function Search({navigation}) {
             }} /> 
               : <Feather name="search" size={20} color="black" style={{ marginLeft: 1 }}/>}
             {/* Input field */}
-            <TextInput style={styles.input} placeholder="Search" value={search} onChangeText={(value)=> {setClicked(true);
-            setSearch(value)} }
+            <TextInput style={styles.input} placeholder="Search" value={search}
+          
+            onChangeText={(value)=> {setSearch(value)} }
               onSubmitEditing={()=> getData(search)} onFocus={() => {setClicked(true)}}/>
             {/* cross Icon, depending on whether the search bar is clicked or not */}
             {clicked && (<Entypo name="cross" size={26} color="black" style={{ padding: 1 }} 

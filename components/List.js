@@ -29,9 +29,13 @@ export default function List({shows}) {
           return resp.json();
       })
       .then((data) => {
-        return data.poster_path = null ? setImg('via.placeholder.com/500') : setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+        if(!data.poster_path || data.poster_path == null) {
+          return setImg('via.placeholder.com/500');
+        } else{
+         setImg(`image.tmdb.org/t/p/w500/${data.poster_path}`)
+        }
       })
-      .catch(console.error);
+      .catch(error => console.error);
   }
 
   function saveFave(id){
