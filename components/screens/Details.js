@@ -108,11 +108,17 @@ export default function Details({navigation, route}) {
           <View style={styles.container}>
             <Icon name='arrowleft' style={styles.backIcon} onPress={()=> navigation.goBack()}  type='antdesign' size={25} color='white' />
           </View>
-
           <View style={styles.listItem}>
-            <View style={styles.imgWrapper}>
-              <Image title={show.title} PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
-            </View>
+              {
+                img == "via.placeholder.com/500x500?text=No+Image" ? 
+                <View style={styles.defaultImgWrapper}>
+                    <Image title={show.title} PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.defaultImg} source={{uri: imgURL}} />
+                </View>   
+                :  
+                <View style={styles.imgWrapper}>
+                  <Image title={show.title} PlaceholderContent={<ActivityIndicator size="large" color="black" />} style={styles.image} source={{uri: imgURL}} />
+                </View>
+              }
             <View style={styles.about}>
               <Text style={styles.listItemHeader}>{show.title}</Text>
               <View style={{marginTop:15}}>
@@ -126,7 +132,6 @@ export default function Details({navigation, route}) {
             <Text style={styles.details}>Details</Text>
             <Text style={styles.text} >{show.overview}</Text>
           </View>
-
           <View style={styles.episode}>
             <Text style={styles.details}>Episode</Text>
             <Text style={styles.basicInfoText}>Total Episodes: {show.aired_episodes}</Text>
@@ -144,7 +149,6 @@ export default function Details({navigation, route}) {
               :<> </>
             }
           </View>
-
           <View>
             {
               show.trailer && <View style={styles.trailer}> 
@@ -180,9 +184,6 @@ const styles = StyleSheet.create({
     marginTop:20,
     paddingLeft:10
   },
-  backIcon:{
-    // paddingLeft:5,
-  },
   title: {
     flex:3,
     fontSize: 20,
@@ -194,8 +195,16 @@ const styles = StyleSheet.create({
     height:200,
     borderRadius: 7,
     marginLeft:5,
-    // resizeMode:"contain"
     resizeMode:"contain",
+  },
+  defaultImg:{
+    width:130,
+    height:200,
+    borderRadius: 7,
+    marginLeft:5,
+  },
+  defaultImgWrapper:{
+    flex:1.8, alignItems:"flex-end"
   },
   imgWrapper:{
     flex:1.8,
