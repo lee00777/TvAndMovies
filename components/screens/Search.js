@@ -1,6 +1,5 @@
-import React, {useState, useEffect,useRef, useContext} from 'react'
+import React, {useState, useEffect,useRef } from 'react'
 import { View, Text, SafeAreaView, StyleSheet, FlatList, Alert, Animated, KeyboardAvoidingView,Platform, TextInput, Keyboard, RefreshControl} from 'react-native'
-import { Input, Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import { Feather, Entypo,Ionicons } from "@expo/vector-icons";
 import List from '../List';

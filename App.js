@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -95,13 +95,18 @@ useEffect(() => {
     <GlobalContext.Provider value={globalData}>
       <SafeAreaProvider>
           <NavigationContainer>
-            <Tab.Navigator initialRouteName='Home'>
+            <Tab.Navigator initialRouteName='Home'
+                screenOptions={{
+                  tabBarActiveTintColor: '#663a82',
+                  tabBarInactiveTintColor: 'gray',
+                }}      
+            >
               <Tab.Screen name="Home" component={Trending} options={{
-                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} />)}}/>
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={focused? "#663a82" : "gray"} />)}}/>
               <Tab.Screen name="Find" component={Search}  options={{
-                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={color} />)}}/>
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'search' : 'search-outline'} size={size} color={focused? "#663a82" : "gray"} />)}}/>
               <Tab.Screen name="Favorites" component={Favorites}  options={{
-                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'star' : 'star-outline'} size={size} color={color} />) }}/>
+                tabBarIcon: ({ focused, size, color }) => (<Ionicons name={focused ? 'star' : 'star-outline'} size={size} color={focused? "#663a82" : "gray"}/>) }}/>
               <Tab.Screen name="Details" component={Details} options={{tabBarButton: () => null,
               tabBarVisible: false}} />
             </Tab.Navigator>
