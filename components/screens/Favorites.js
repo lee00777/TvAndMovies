@@ -24,7 +24,7 @@ export default function Favorites() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['right', 'bottom', 'left']}>
       <Text style={styles.header}>Favorites</Text>
-      <Animated.View style={{opacity: animation}}>
+      <Animated.View style={{opacity: animation, flex: 1, flexGrow: 1}}>
         <FlatList 
           data={faveData}
           numColumns={3}
