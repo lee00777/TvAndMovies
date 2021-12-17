@@ -1,5 +1,5 @@
 
-import {Text, SafeAreaView, StyleSheet, FlatList, Animated} from 'react-native'
+import {Text, SafeAreaView, StyleSheet, FlatList, Animated, Platform} from 'react-native'
 import React, {useEffect, useContext, useRef} from 'react'
 import GlobalContext from '../utils/globalContext.utils.';
 import * as StoreReview from 'expo-store-review';
@@ -15,11 +15,22 @@ export default function Favorites() {
     useNativeDriver: true,
   }).start();
   
+  async function getReview(){
+    if (await StoreReview.hasAction()) {
+      if(Platform.OS === 'ios') {
+        favorites.length == 3 &&
+          StoreReview.requestReview();
+      } else {
+        setTimeout(()=>{
+          console.log('Store Review requested');
+          StoreReview.requestReview().catch(err => console.log(err))
+        }, 8000)
+      }
+    }
+  }
 
   useEffect(() => {
-    if(favorites.length == 3){
-      StoreReview.requestReview();
-    }
+    getReview();
   }, [favorites])
 
   return (
